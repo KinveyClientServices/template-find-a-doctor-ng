@@ -10,6 +10,7 @@ import * as dialogs from "tns-core-modules/ui/dialogs";
 import { ModalDialogOptions, ModalDialogService } from "nativescript-angular/modal-dialog";
 import { CalendarModalViewComponent } from "./calendar-modal";
 import { Kinvey } from "kinvey-nativescript-sdk";
+import { RapidHealthProviders } from "../../shared/models/rapidHealthProviders.model";
 
 @Component({
 	selector: "ResultDetailComponent",
@@ -18,13 +19,14 @@ import { Kinvey } from "kinvey-nativescript-sdk";
 	styleUrls: ["../results-common.css"]
 })
 export class ResultDetailComponent {
+	rapidProviderData: RapidHealthProviders;
 	isLoading: boolean;
 	modalIsShown: boolean;
 	btnRemove: boolean;
 	title: string;
 	appointmentId: string;
-	public item: Provider;
-
+	public item: RapidHealthProviders;
+	
 	constructor(
 		private _modalService: ModalDialogService,
 		private _vcRef: ViewContainerRef,
@@ -38,25 +40,19 @@ export class ResultDetailComponent {
 	ngOnInit(): void {
 		this.isLoading = true;
 		this.title = "Result Details";
-		this.item = new Provider({});
+		this.item = new RapidHealthProviders({});
 		this.btnRemove = false;
 		this._activatedRoute.params.subscribe(params => {
-			const npi = params.npi;
+						
+			this.item =  JSON.parse(params.rapidProvider).provider as RapidHealthProviders;
 			this.btnRemove = !!params.remove;
-			this.appointmentId = params.appointment;
-			if (npi) {
-				this._providerService.getProviderByNpi(npi).then(providerItem => {
-					this.item = providerItem;
-					this.title = this.item.prefix + ' ' + this.item.first_name + ' ' + this.item.last_name;
-					this.isLoading = false;
-				});
+		
+			if(this.item.prefix !== '') {			
+			 		this.title =  this.item.prefix + ' ' + this.item.first_name + ' ' + this.item.last_name;
 			} else {
-				alert({
-					title: "Oops something went wrong.",
-					message: "Unknown Provider",
-					okButtonText: "Ok"
-				});
+					this.title =  this.item.first_name + ' ' + this.item.last_name;
 			}
+			this.isLoading = false;		
 		});
 	}
 

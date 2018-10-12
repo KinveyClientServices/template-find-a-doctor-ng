@@ -3,53 +3,32 @@
         <GridLayout rows="auto,auto" columns="*,*" class="m-t-10 m-b-10 p-l-15 p-r-15">
             <Label text="Search by" class="text-muted text-uppercase t-12"></Label>
             <Label text="Reset" col="1" class="text-right m-r-5 pink-accent" (tap)="onResetLabelTap()"></Label>
-            <StackLayout row="1" col="0" class="pull-right m-r-30" data-name="location">
-                <Button text="&#xf041;" [class.active]="zipCode !== ''" [class.selected]="selectedFilter==='location'" class="fa filter-button"
-                    (tap)="onFilterButtonTap($event)"></Button>
-                <Label text="Location" class="text-center c-cb" (tap)="onFilterButtonTap($event)"></Label>
-            </StackLayout>
-            <StackLayout row="1" col="1" class="pull-left m-l-30" data-name="specialty">
-                <Button text="&#xf0fa;" [class.active]="specialty !== ''" [class.selected]="selectedFilter==='specialty'" class="fa filter-button"
-                    (tap)="onFilterButtonTap($event)"></Button>
-                <Label text="Specialty" class="text-center c-cb" (tap)="onFilterButtonTap($event)"></Label>
-            </StackLayout>
+            
         </GridLayout>
         <StackLayout class="hr-light"></StackLayout>
     </StackLayout>
     <StackLayout class="result-panel" class="c-bg-lg" row="1">
-        <GridLayout rows="auto,*" *ngIf="selectedFilter==='home'">
-            <RadListView row="1" [items]="recentItems" #recentItemsListView [groupingFunction]="appointmentsGroupingFunc">
-                <ng-template tkListItemTemplate let-item="item">
-                    <GridLayout rows="auto, auto, auto" columns="auto, *, auto" class="c-bg-white" [class.outdated]="!isRecent(item)" (tap)="onAppointmentTap(item)">
-                        <Image row="0" rowSpan="2" col="0" width="50" height="50" class="m-l-15 m-r-15 m-t-10 m-y-auto text-center img-circle" [src]="getProviderImage(item)"></Image>
-                        <Label row="0" col="1" [text]="getProviderName(item)" class="c-black t-18 m-t-15 font-weight-bold"></Label>
-                        <Label row="1" col="1" [text]="getStartTime(item.start_date)" class="text-muted"></Label>
-                        <Label row="0" rowSpan="2" col="2" text="&#xf105;" class="fa text-muted t-25 m-r-15 m-y-auto"></Label>
-                        <StackLayout row="2" colSpan="3" class="hr-light m-t-10"></StackLayout>
-                    </GridLayout>
-                </ng-template>
-                <ng-template tkGroupTemplate let-category="category">
-                    <GridLayout height="40">
-                        <Label [text]="category" class="text-muted t-14 p-l-15 m-t-10 m-b-10"></Label>
-                        <StackLayout class="hr-light" verticalAlignment="bottom"></StackLayout>
-                    </GridLayout>
-                </ng-template>
-            </RadListView>
-        </GridLayout>
-        <StackLayout *ngIf="selectedFilter==='location'">
+        
+        <StackLayout>
             <StackLayout>
-                <Label text="Location" class="text-muted text-uppercase t-14 p-l-15 p-t-10 p-b-7"></Label>
+                <Label text="Location &#xf041;" class=" fa fa-medkit text-muted text-uppercase t-14 p-l-15 p-t-10 p-b-7"></Label>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
             <StackLayout class="c-bg-white">
                 <GridLayout rows="auto" columns="auto,*">
-                    <Label text="ZIP" class="itemLabel t-19 p-l-15 p-b-10 p-t-10"></Label>
-                    <TextField hint="Enter ZIP code" keyboardType="number" class="pull-right m-r-15" col="1" [(ngModel)]="zipCode"></TextField>
+                    <Label text="Zip Code" 
+                    class="itemLabel t-19 p-l-15 p-b-10 p-t-10" 
+                    style="font-size:16px;"
+                    (tap) = "onSelectCurrentLocationTap()"></Label>
+ 
+                    <TextField (textChange)="onZipCodeChange($event)" hint="Enter ZIP code" keyboardType="number" class="pull-right m-r-15" col="2" [(ngModel)]="zipCode"></TextField>
                 </GridLayout>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
         </StackLayout>
-        <GridLayout rows="auto,*" [visibility]="selectedFilter==='specialty' ? 'visible' : 'hidden'" class="c-bg-white">
+        <Label class="fa fa-medkit text-muted text-uppercase t-14 p-l-15 p-t-10 p-b-7" text="Select Speciality (Choose One) &#xf0fa;"></Label>
+        <GridLayout rows="auto,*"  class="c-bg-white">
+            
             <SearchBar #specialityFilterSearchBar 
                 hint="Filter..." 
                 (loaded)="specialtySearchBarLoaded($event)" 
@@ -83,7 +62,7 @@
             <ActivityIndicator rowSpan="2" class="activity-indicator" [busy]="isSpecialtyLoading"></ActivityIndicator>
         </GridLayout>
     </StackLayout>
-    <StackLayout *ngIf="selectedFilter !== 'home'" class="p-t-10" row="1" verticalAlignment="bottom">
+    <StackLayout class="p-t-10" row="1" verticalAlignment="bottom">
         <Button text="Find Physician" class="find-button platform-button" (tap)="onFindButtonTap()"></Button>
     </StackLayout>
 </GridLayout>

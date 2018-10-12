@@ -12,6 +12,7 @@ import { Appointment } from "../shared/models/appointment.model";
 import { RadListViewComponent } from "nativescript-ui-listview/angular";
 import { Specialty } from "./shared/specialty";
 import { isAndroid } from "tns-core-modules/platform";
+import * as geolocation from "nativescript-geolocation";
 
 @Component({
     selector: "SearchComponent",
@@ -31,7 +32,8 @@ export class SearchComponent {
     specialtyFilteringFunc: Function;
     appointmentsGroupingFunc: Function;
     specialtyListViewTemplateSelector: Function;
-
+    navigator: Navigator;
+    
     @ViewChild("specialtyListView") specialtyListView: RadListViewComponent;
     @ViewChild("specialityFilterSearchBar") specialityFilterSearchBar: any;
 
@@ -40,7 +42,7 @@ export class SearchComponent {
         private _providerService: ProviderService,
         private _specialtyService: SpecialtyService,
         private _routerExtensions: RouterExtensions,
-        private _ngZone: NgZone
+        private _ngZone: NgZone,
     ) { }
 
     ngOnInit(): void {
@@ -66,13 +68,32 @@ export class SearchComponent {
             this.isSpecialtyLoading = false;
         });
 
-        this._appointmentService.getAppointments()
-            .then(appointments => {
-                if (appointments) {
-                    this.recentItems = new ObservableArray(appointments);
-                }
-            });
+       
+
+        //to enable location services
+        geolocation.isEnabled().then(function (isEnabled) {
+            if (!isEnabled) {
+                geolocation.enableLocationRequest().then(function () {
+                }, function (e) {
+                    console.log("Error1: " + (e.message || e));
+                });
+            }
+        }, function (e) {
+            console.log("Error2: " + (e.message || e));
+        });
+          //get current location (latitude and longitude)
+        var location = geolocation.getCurrentLocation({desiredAccuracy: 3, updateDistance: 10, maximumAge: 20000, timeout: 20000}).
+        then(function(loc) {
+            if (loc) {
+                console.log("Latitude: " +loc.latitude);
+                console.log("Longitude: " +loc.longitude);
+            }
+        }, function(e){
+            console.log("Error: " + e.message);
+        });
+            
     }
+    
 
     public specialtySearchBarLoaded(args) {
         var searchbar: SearchBar = <SearchBar>args.object;
@@ -99,6 +120,10 @@ export class SearchComponent {
     }
 
     onFindButtonTap(args: EventData) {
+        if(this.specialty === undefined) {
+            alert("Please select a speciality to find physicians near you");
+            return;
+        }
         // set values to "" if zipCode or speciality are undefined 
         // since undefined is passed as "undefined" string in NG navigation
         let filter = {
@@ -199,5 +224,14 @@ export class SearchComponent {
             const searchTextBar = <SearchBar>args.object;
             searchTextBar.dismissSoftInput();
         }
+    }
+
+    //to set zip code character limit
+    onZipCodeChange(args) { 
+        var textfield = args.object;
+        var legth = parseInt("5");
+            var array = [];
+            array[0] = new android.text.InputFilter.LengthFilter(legth);
+            textfield .android.setFilters(array);
     }
 }

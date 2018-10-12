@@ -6,20 +6,21 @@
         <GridLayout rows="*">
             <StackLayout [visibility]="isLoading ? 'hidden' : 'visible'">
                 <StackLayout class="c-bg-lg p-10">
-                    <Image width="80" height="80" class="m-15 m-x-auto img-circle-large" [src]="item.small_image_url"></Image>
+                    <Image [visibility]="'collapsed'" width="80" height="80" class="m-15 m-x-auto img-circle-large" ></Image>
+                    <Label  width="80" height="80" class="fa c-cb alt-user-image text-center m-20" style="font-size: 50px;"  text="&#xf2be;"></Label>
                     <Label [text]="title" class="c-black t-25 font-weight-bold text-center" textWrap="true"></Label>
-                    <Label [text]="item.residencies[0] && item.residencies[0].institution_name" class="text-muted text-center" textWrap="true"></Label>
+                    <Label *ngIf="item.residencies && item.residencies.length" [text]="item.residencies[0].institution_name" class="text-muted text-center" textWrap="true"></Label>
                     <Label [text]="item.specialty_primary[0]" class="c-black text-center m-5" textWrap="true"></Label>
-                    <Button class="btn btn-margin btn-primary book-button platform-button" *ngIf="!btnRemove" text="Book an Appointment" (tap)="onBookButtonTap(item)"></Button>
+                    <Button class="btn btn-margin btn-primary book-button platform-button" *ngIf="!btnRemove" text="Request an Appointment" (tap)="onBookButtonTap(item)"></Button>
                     <Button class="btn btn-margin btn-primary cancel-button platform-button" *ngIf="btnRemove" text="Cancel this Appointment"
                         (tap)="onCancelButtonTap(item)"></Button>
                 </StackLayout>
                 <GridLayout columns="*,3*" rows="auto,auto,auto,auto,auto,auto" class="p-l-15 t-17">
                     <Label row="0" col="0" text="Education" class="c-black p-b-10 p-t-15"></Label>
-                    <Label row="0" col="1" [text]="formatEducation(item.education)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
+                    <Label *ngIf="item.education && item.education.length" row="0" col="1" [text]="formatEducation(item.education)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
                     <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
                     <Label row="2" col="0" text="Residencies:" class="c-black p-b-10 p-t-15"></Label>
-                    <Label row="2" col="1" [text]="formatResidencies(item.residencies)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
+                    <Label *ngIf="item.residencies && item.residencies.length" row="2" col="1" [text]="formatResidencies(item.residencies)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
                     <StackLayout row="3" colspan="2" class="hr-light"></StackLayout>
                     <Label row="4" col="0" text="Degree:" class="c-black p-b-10 p-t-15"></Label>
                     <Label row="4" col="1" [text]="item.degree" class="text-muted p-b-10 p-t-15"></Label>
