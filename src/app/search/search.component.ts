@@ -1,18 +1,48 @@
-import { Component, ViewContainerRef, ViewChild, NgZone } from "@angular/core";
-import { EventData } from "tns-core-modules/data/observable";
-import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
-import { SearchBar } from "tns-core-modules/ui/search-bar";
-import { ListViewEventData } from "nativescript-ui-listview";
-import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
-import { RouterExtensions } from "nativescript-angular/router";
-import { SpecialtyService } from "./shared/specialty.service";
-import { AppointmentService } from "../shared/services/appointment.service";
-import { ProviderService } from "../shared/services/provider.service";
-import { Appointment } from "../shared/models/appointment.model";
-import { RadListViewComponent } from "nativescript-ui-listview/angular";
-import { Specialty } from "./shared/specialty";
-import { isAndroid } from "tns-core-modules/platform";
+import { Component, NgZone,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
+} from "@angular/core";
+import {
+    RouterExtensions
+} from "nativescript-angular/router";
 import * as geolocation from "nativescript-geolocation";
+import {
+    ListViewEventData
+} from "nativescript-ui-listview";
+import {
+    RadListViewComponent
+} from "nativescript-ui-listview/angular";
+import {
+    EventData
+} from "tns-core-modules/data/observable";
+import {
+    ObservableArray
+} from "tns-core-modules/data/observable-array/observable-array";
+import {
+    isAndroid
+} from "tns-core-modules/platform";
+import {
+    StackLayout
+} from "tns-core-modules/ui/layouts/stack-layout";
+import {
+    SearchBar
+} from "tns-core-modules/ui/search-bar";
+import {
+    Appointment
+} from "../shared/models/appointment.model";
+import {
+    AppointmentService
+} from "../shared/services/appointment.service";
+import {
+    ProviderService
+} from "../shared/services/provider.service";
+import {
+    Specialty
+} from "./shared/specialty";
+import {
+    SpecialtyService
+} from "./shared/specialty.service";
 
 @Component({
     selector: "SearchComponent",
@@ -21,7 +51,7 @@ import * as geolocation from "nativescript-geolocation";
     styleUrls: ["./search-common.css"],
     providers: [SpecialtyService, AppointmentService]
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
     selectedFilter: string = "home";
     specialty: string;
     specialtyItems: ObservableArray<Specialty>;
@@ -29,11 +59,13 @@ export class SearchComponent {
     zipCode: string;
     filterSpecialties: string = "";
     isSpecialtyLoading: boolean;
-    specialtyFilteringFunc: Function;
-    appointmentsGroupingFunc: Function;
-    specialtyListViewTemplateSelector: Function;
+    specialtyFilteringFunc;
+    appointmentsGroupingFunc ;
+    specialtyListViewTemplateSelector;
     navigator: Navigator;
-    
+    latLong: string;
+    isValid: boolean = true;
+
     @ViewChild("specialtyListView") specialtyListView: RadListViewComponent;
     @ViewChild("specialityFilterSearchBar") specialityFilterSearchBar: any;
 
@@ -42,7 +74,7 @@ export class SearchComponent {
         private _providerService: ProviderService,
         private _specialtyService: SpecialtyService,
         private _routerExtensions: RouterExtensions,
-        private _ngZone: NgZone,
+        private _ngZone: NgZone
     ) { }
 
     ngOnInit(): void {
@@ -53,50 +85,42 @@ export class SearchComponent {
             return item.specialty.toLowerCase().includes(this.filterSpecialties.toLowerCase());
         };
         this.specialtyFilteringFunc = filterFunc.bind(this);
-        const groupingFunc = (item: Appointment): string => {
-            // non-braking space used to force Outdated group to be at the bottom
-            return this.isRecent(item) ? " Your Recent Appointments".toUpperCase() : "\u00a0Outdated".toUpperCase();
-        }
-        this.appointmentsGroupingFunc = groupingFunc.bind(this);
 
         this.specialtyListViewTemplateSelector = (item: Specialty, index: number, items: any) => {
             return items.length === index + 1 ? "last" : "default";
-        }
+        };
 
-        this._specialtyService.getSpecialties().then(specialities => {
+        this._specialtyService.getSpecialties().then((specialities) => {
             this.specialtyItems = new ObservableArray<Specialty>(specialities);
             this.isSpecialtyLoading = false;
         });
 
-       
-
-        //to enable location services
-        geolocation.isEnabled().then(function (isEnabled) {
+        // to enable location services
+        geolocation.isEnabled().then((isEnabled) => {
             if (!isEnabled) {
-                geolocation.enableLocationRequest().then(function () {
-                }, function (e) {
-                    console.log("Error1: " + (e.message || e));
-                });
+                geolocation.enableLocationRequest();
             }
-        }, function (e) {
-            console.log("Error2: " + (e.message || e));
         });
-          //get current location (latitude and longitude)
-        var location = geolocation.getCurrentLocation({desiredAccuracy: 3, updateDistance: 10, maximumAge: 20000, timeout: 20000}).
-        then(function(loc) {
-            if (loc) {
-                console.log("Latitude: " +loc.latitude);
-                console.log("Longitude: " +loc.longitude);
-            }
-        }, function(e){
-            console.log("Error: " + e.message);
-        });
-            
-    }
-    
+        // get current location (latitude and longitude)
+        const location = geolocation.getCurrentLocation({
+            desiredAccuracy: 3,
+            updateDistance: 10,
+            maximumAge: 20000,
+            timeout: 20000
+        }).
+            then((loc) => {
+                if (loc) {
+                    console.log("Latitude: " + loc.latitude);
+                    console.log("Longitude: " + loc.longitude);
+                }
+            }, (e) => {
+                console.log("Error: " + e.message);
+            });
 
-    public specialtySearchBarLoaded(args) {
-        var searchbar: SearchBar = <SearchBar>args.object;
+    }
+
+    specialtySearchBarLoaded(args) {
+        const searchbar: SearchBar = <SearchBar>args.object;
         if (isAndroid) {
             searchbar.android.clearFocus();
         }
@@ -106,8 +130,9 @@ export class SearchComponent {
         this.selectedFilter = "home";
         this.zipCode = "";
         this.specialty = "";
-        this.specialtyItems && this.specialtyItems.forEach(item => item.selected = false);
-
+        if (this.specialtyItems) {
+        this.specialtyItems.forEach((item) => item.selected = false);
+       }
         // close keyboard in android
         if (isAndroid) {
             this.specialityFilterSearchBar.nativeElement.dismissSoftInput();
@@ -120,30 +145,61 @@ export class SearchComponent {
     }
 
     onFindButtonTap(args: EventData) {
-        if(this.specialty === undefined) {
-            alert("Please select a speciality to find physicians near you");
-            return;
-        }
-        // set values to "" if zipCode or speciality are undefined 
-        // since undefined is passed as "undefined" string in NG navigation
-        let filter = {
-            zipCode: this.zipCode || "",
-            specialty: this.specialty || ""
-        };
+    // tslint:disable-next-line:no-this-assignment
+    let that = this;
 
-        this._routerExtensions.navigate(["/results", filter],
-            {
-                animated: true,
-                transition: {
-                    name: "slide",
-                    duration: 200,
-                    curve: "ease"
+    if (this.specialty === undefined || this.specialty === "") {
+        alert("Please select a specialty to find physicians near you.");
+
+        return;
+    }
+
+    geolocation.isEnabled().then(function(isEnabled) {
+        if (!isEnabled && (that.zipCode === undefined || that.zipCode === "")) {
+            alert("Please enable location services or enter zip code to find physicians near you.");
+
+            return  false;
+        } else if (isEnabled && (that.zipCode === undefined || that.zipCode === "")) {
+            // get current location (latitude and longitude)
+            geolocation.getCurrentLocation({
+                desiredAccuracy: 3,
+                updateDistance: 10,
+                maximumAge: 20000,
+                timeout: 20000
+            }).then(function(loc) {
+                if (loc) {
+                    console.log("Latitude: " + loc.latitude);
+                    console.log("Longitude: " + loc.longitude);
+                    that.latLong = loc.latitude + "," + loc.longitude;
+                    that.navigateToResultsScreen(that);
                 }
             });
+        } else {
+            that.navigateToResultsScreen(that);
+        }
+    });
+   }
+
+    navigateToResultsScreen(that) {
+        const filter = {
+            zipCode: that.zipCode || "",
+            specialty: that.specialty || "",
+            latLong: that.latLong || ""
+        };
+
+        this._routerExtensions.navigate(["/results", filter], {
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
     }
 
     specialtySelected(args: ListViewEventData) {
-        this.specialtyItems.forEach(item => item.selected = false);
+        // tslint:disable-next-line:no-shadowed-variable
+        this.specialtyItems.forEach((item) => item.selected = false);
         const selectedItems = args.object.getSelectedItems();
         const item = selectedItems && selectedItems[0];
         if (item) {
@@ -155,14 +211,13 @@ export class SearchComponent {
     }
 
     onProfileButtonTap() {
-        this._routerExtensions.navigate(["/plan"],
-            {
-                animated: true,
-                transition: {
-                    name: "fade",
-                    duration: 200
-                }
-            });
+        this._routerExtensions.navigate(["/plan"], {
+            animated: true,
+            transition: {
+                name: "fade",
+                duration: 200
+            }
+        });
     }
 
     getProviderName(appointment: Appointment): string {
@@ -172,6 +227,7 @@ export class SearchComponent {
 
     getProviderImage(appointment: Appointment): string {
         // TODO: get the provider's small image from the appointment
+        // tslint:disable-next-line:max-line-length
         return "https://thumb9.shutterstock.com/display_pic_with_logo/102/172174202/stock-photo-portrait-of-confident-male-doctor-with-arms-crossed-standing-at-clinic-172174202.jpg";
     }
 
@@ -179,17 +235,25 @@ export class SearchComponent {
         const parsed = start && new Date(start);
         let result = "";
         if (parsed) {
-            const locale = "en-us", hours = parsed.getHours(), minutes = parsed.getMinutes();
-            result = `${parsed.toLocaleDateString(locale)}, at ${hours % 12 === 0 ? 12 : hours % 12}:${minutes > 10 ? minutes : '0' + minutes}${hours < 12 ? 'AM' : 'PM'}.`;
+            // tslint:disable-next-line:one-variable-per-declaration
+            const locale = "en-us",
+                hours = parsed.getHours(),
+                minutes = parsed.getMinutes();
+            // tslint:disable-next-line:max-line-length
+            result = `${parsed.toLocaleDateString(locale)}, at ${hours % 12 === 0 ? 12 : hours % 12}:${minutes > 10 ? minutes : "0" + minutes}${hours < 12 ? "AM" : "PM"}.`;
         }
+
         return result;
     }
 
     onAppointmentTap(appointment: Appointment) {
-        // TODO: get actual provider npi from the appointment - appointment.provider_scheduler_uuid ? 
+        // TODO: get actual provider npi from the appointment - appointment.provider_scheduler_uuid ?
         const providerNpi = "1467560003";
-        this._routerExtensions.navigate(["results/result-detail", { npi: providerNpi, remove: true, appointment: appointment.appointment_id }],
-            {
+        this._routerExtensions.navigate(["results/result-detail", {
+            npi: providerNpi,
+            remove: true,
+            appointment: appointment.appointment_id
+        }], {
                 animated: true,
                 transition: {
                     name: "slide",
@@ -200,15 +264,16 @@ export class SearchComponent {
     }
 
     onTextChanged(args: EventData) {
-        let searchBar = <SearchBar>args.object;
+        const searchBar = <SearchBar>args.object;
 
         this.filterSpecialties = searchBar.text;
         this.specialtyListView.listView.refresh();
     }
 
     isRecent(item: Appointment): boolean {
-        var endDate = item && item.end_date && new Date(item.end_date);
-        return (endDate && (endDate > new Date()))
+        const endDate = item && item.end_date && new Date(item.end_date);
+
+        return (endDate && (endDate > new Date()));
     }
 
     capitalize(item: string): string {
@@ -226,12 +291,13 @@ export class SearchComponent {
         }
     }
 
-    //to set zip code character limit
-    onZipCodeChange(args) { 
-        var textfield = args.object;
-        var legth = parseInt("5");
-            var array = [];
-            array[0] = new android.text.InputFilter.LengthFilter(legth);
-            textfield .android.setFilters(array);
+    // to set zip code character limit
+    onZipCodeChange(args) {
+        const textfield = args.object;
+        // tslint:disable-next-line:radix
+        const legth = parseInt("5");
+        const array = [];
+        array[0] = new android.text.InputFilter.LengthFilter(legth);
+        textfield.android.setFilters(array);
     }
 }

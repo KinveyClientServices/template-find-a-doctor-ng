@@ -4,7 +4,7 @@
 <GridLayout rows="*" class="c-bg-lg p-10">
     <ActivityIndicator class="activity-indicator" [busy]="isLoading"></ActivityIndicator>
     <Label *ngIf="!isLoading && (!resultItems || !resultItems.length) && (!resultItems || !resultItems.length)" text="No results found" verticalAlignment="center" horizontalAlignment="center"></Label> 
-    <RadListView  *ngIf="resultItems && resultItems.length" [items]="resultItems" (itemTap)="resultSelected($event)">
+    <RadListView  *ngIf="resultItems && resultItems.length" loadOnDemandMode="Manual" (loadMoreDataRequested)="onLoadMoreItemsRequested($event)" [items]="resultItems" (itemTap)="resultSelected($event)">
         <ng-template tkListItemTemplate let-item="item">
             <GridLayout rows="auto, auto, auto" columns="auto, *, auto" class="c-bg-white" (tap)="onResultTap(item)">
                 <Image [visibility]="'collapsed'"  row="0" rowSpan="2" col="0" width="60" height="60" class="m-15 m-y-auto text-center img-circle" ></Image>

@@ -4,8 +4,8 @@ import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 
 import { SearchRoutingModule } from "./search-routing.module";
 
-import { SpecialtyService } from "./shared/specialty.service";
 import { ProviderService } from "../shared/services/provider.service";
+import { SpecialtyService } from "./shared/specialty.service";
 
 import { SharedModule } from "../shared/shared.module";
 
