@@ -1,4 +1,8 @@
 <StackLayout>
+        <GridLayout rows="auto,auto" columns="*,*" class="m-t-10 m-b-10 p-l-15 p-r-15">
+                <Label text="Reset" col="1" class="text-right m-r-5 pink-accent" (tap)="onResetLabelTap()"></Label>
+                
+            </GridLayout>
     <GridLayout rows="auto,*,auto" class="c-bg-white">
             <SearchBar #searchBar 
                 (layoutChanged)="onSearchBarLayoutChange($event)"

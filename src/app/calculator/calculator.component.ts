@@ -26,7 +26,7 @@ export class CalculatorComponent {
 
     @ViewChild("proceduresListView") proceduresListView: RadListViewComponent;
     @ViewChild("searchBar") searchBar: any;
-
+    
     constructor(
         private _procedureService: ProcedureService,
         private _routerExtensions: RouterExtensions,
@@ -94,5 +94,12 @@ export class CalculatorComponent {
                     curve: "ease"
                 }
             });
+    }
+    onResetLabelTap() {
+        this.proceduresFilter = "";
+        this.hasConsentToSearch = false;
+        if(this.procedure){
+            this.procedures.forEach(item => item.selected = false);
+        }
     }
 }
