@@ -6,7 +6,7 @@
     android:style="font-size:8"
     (selectedIndexChanged)="onSelectedIndexChanged($event)"
     iosIconRenderingMode="alwaysOriginal">
-    <ng-template tabItem title="Find Doctor" iconSource="{{ tabSelectedIndex === 0 ? getIconSource('find_doctor_active') : getIconSource('find_doctor') }}">
+    <ng-template tabItem title="Find Physician" iconSource="{{ tabSelectedIndex === 0 ? getIconSource('find_doctor_active') : getIconSource('find_doctor') }}">
         <GridLayout android:style="font-size:16">
             <SearchComponent></SearchComponent>
         </GridLayout>

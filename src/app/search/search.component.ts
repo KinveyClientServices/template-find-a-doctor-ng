@@ -130,6 +130,7 @@ export class SearchComponent implements OnInit {
         this.selectedFilter = "home";
         this.zipCode = "";
         this.specialty = "";
+        this.filterSpecialties = "";
         if (this.specialtyItems) {
         this.specialtyItems.forEach((item) => item.selected = false);
        }
@@ -149,7 +150,8 @@ export class SearchComponent implements OnInit {
     let that = this;
 
     if (this.specialty === undefined || this.specialty === "") {
-        alert("Please select a specialty to find physicians near you.");
+        //alert("Please select a specialty to find physicians near you.");
+        alert("Please Select specialty to get list of physicians near you");
 
         return;
     }

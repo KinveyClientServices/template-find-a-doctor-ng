@@ -45,7 +45,7 @@ export class ResultsComponent implements OnInit {
   this._activatedRoute.params.subscribe((params) => {
    params = params || {};
 
-   this._providerService.findRapidHealthProviders(params.specialty, params.zipCode, params.lat_long)
+   this._providerService.findRapidHealthProviders(params.specialty, params.zipCode, params.latLong)
     .then((rapidproviders) => {
      this.resultAllItems = new ObservableArray<RapidHealthProviders>(rapidproviders);
      // tslint:disable-next-line:no-unused-expression
@@ -59,14 +59,16 @@ export class ResultsComponent implements OnInit {
 
  addMoreItemsFromSource(chunkSize: number, that) {
   const newItems = that.resultAllItems.splice(0, chunkSize);
-  that.resultItems.push(newItems);
+    that.resultItems.push(newItems);
  }
+
 
  onLoadMoreItemsRequested(args) {
   const that = new WeakRef(this);
   // tslint:disable-next-line:no-this-assignment
   const resultComp = this;
   const listView: RadListView = args.object;
+  //if (listView.items.length < this.resultItems.length)
   if (this.resultItems.length > 0) {
    setTimeout(() => {
     that.get().addMoreItemsFromSource(10, resultComp);

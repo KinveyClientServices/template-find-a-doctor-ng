@@ -15,3 +15,15 @@ typings/
 .vscode
 .cloud
 /.project
+hooks/after-prepare/nativescript-dev-webpack.js
+hooks/after-watch/nativescript-dev-typescript.js
+hooks/after-watch/nativescript-dev-webpack.js
+hooks/before-cleanApp/nativescript-dev-webpack.js
+hooks/before-livesync/nativescript-angular-sync.js
+hooks/before-prepare/nativescript-dev-typescript.js
+hooks/before-prepareJSApp/nativescript-dev-webpack.js
+hooks/before-shouldPrepare/nativescript-dev-webpack.js
+hooks/before-watch/nativescript-dev-typescript.js
+hooks/before-watch/nativescript-dev-webpack.js
+hooks/before-watchPatterns/nativescript-dev-typescript.js
+hooks/before-watchPatterns/nativescript-dev-webpack.js
