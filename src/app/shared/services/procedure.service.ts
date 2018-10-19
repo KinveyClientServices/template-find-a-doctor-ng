@@ -7,21 +7,21 @@ export class ProcedureService {
 
     private _procedures: Array<Procedure>;
 
-    private _procedureStore = Kinvey.DataStore.collection<Procedure>("Services", Kinvey.DataStoreType.Network);
+    private _procedureStore = Kinvey.DataStore.collection<Procedure>("oop-services", Kinvey.DataStoreType.Network);
     private _proceduresPromise: Promise<any>;
 
-    getProcedures(): Promise<Procedure[]> {
+    getProcedures(): Promise<Array<Procedure>> {
         if (!this._proceduresPromise) {
             this._proceduresPromise = this._procedureStore.find().toPromise()
                 .then((data) => {
                     this._procedures = [];
-
-                    if (data && data.length) {
-                        data.forEach((procedureData: any) => {
-                            const procedure = new Procedure(procedureData);
-                            this._procedures.push(procedure);
-                        });
-                    }
+                    this._procedures =  data as Array<Procedure>;
+                    // if (data && data.length) {
+                    //     data.forEach((procedureData: any) => {
+                    //         const procedure = new Procedure(procedureData);
+                    //         this._procedures.push(procedure);
+                    //     });
+                    //}
 
                     return this._procedures;
                 })

@@ -32,7 +32,7 @@ export class CalculatorResultComponent {
 		this._activatedRoute.params.subscribe(params => {
 			params = params || {};
 			this.procedure = <Procedure>params;
-			this.title = this.procedure.name;
+			this.title = this.procedure.episode;
 			this._estimateService.getEstimates(this.procedure)
 				.then(estimates => {
 					this.isLoading = false;

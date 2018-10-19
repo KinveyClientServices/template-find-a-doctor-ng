@@ -1,17 +1,17 @@
 import { Entity } from "kinvey-nativescript-sdk";
 
 export class Procedure implements Entity {
-    public _id: string;
-    public name: string;
-    public category: string;
-    public keywords: string;
-    public selected: boolean;
+    _id: string;
+    episode: string;
+    service: string;
+    keywords: string;
+    selected: boolean;
 
     constructor(dataItem: any) {
         dataItem = dataItem || {};
         this._id = dataItem._id;
-        this.name = dataItem.name;
-        this.category = dataItem.category;
+        this.episode = dataItem.episode;
+        this.service = dataItem.service;
         this.keywords = dataItem.keywords;
         this.selected = dataItem.selected === true;
     }
