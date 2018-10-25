@@ -9,29 +9,27 @@ export class EstimateService {
     private _estimates: Array<Estimate>;
     private _estimatesPromise: Promise<any>;
     private _oopStore = Kinvey.DataStore.collection<Procedure>("OOP", Kinvey.DataStoreType.Network);
+    private _oopWidgetStore = Kinvey.DataStore.collection("oop-widget", Kinvey.DataStoreType.Network);
+    
 
-    getEstimates(procedure: Procedure): Promise<any> {
-        const estimatesQuery = new Kinvey.Query();
-        estimatesQuery.equalTo("service_id", procedure._id);
-
-        return this._oopStore.find(estimatesQuery).toPromise()
-            .then((data) => {
-                this._estimates = [];
-
-                if (data && data.length) {
-                    data.forEach((estimateData: any) => {
-                        const estimate = new Estimate(estimateData);
-                        this._estimates.push(estimate);
-                    });
-                }
-                return this._estimates;
-            })
-            .catch((error: Kinvey.BaseError) => {
-                alert({
-                    title: "Oops something went wrong.",
-                    message: error.message,
-                    okButtonText: "Ok"
-                });
+    getOOPDetails(procedure: Procedure): Promise<any> {
+        const oopQuery = new Kinvey.Query();
+        oopQuery.equalTo("episode_name", procedure.episode);
+        oopQuery.equalTo("service_id", "");
+        oopQuery.equalTo("category_name", "Day Of");
+        return this._oopWidgetStore.find(oopQuery).toPromise()
+            .then(function (data) {
+             
+            if (data && data.length) {
+                return data;
+            }
+        })
+            .catch(function (error) {
+            alert({
+                title: "Oops something went wrong.",
+                message: error.debug,
+                okButtonText: "Ok"
             });
+        });
     }
 }
