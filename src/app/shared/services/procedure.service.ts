@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Kinvey } from "kinvey-nativescript-sdk";
 import { Procedure } from "../models/procedure.model";
-import { Provider } from "~/app/shared/models/provider.model";
 
 @Injectable()
 export class ProcedureService {
 
     private _procedures: Array<Procedure>;
-    private _filterProcedures: Array<any>;
 
     private _procedureStore = Kinvey.DataStore.collection<Procedure>("oop-services", Kinvey.DataStoreType.Network);
     private _proceduresPromise: Promise<any>;
@@ -17,35 +15,15 @@ export class ProcedureService {
             this._proceduresPromise = this._procedureStore.find().toPromise()
                 .then((data) => {
                     this._procedures = [];
-                    this._filterProcedures = [];
                     this._procedures =  data as Array<Procedure>;
-                    this._filterProcedures = [] as Array<Procedure>;
+                    // if (data && data.length) {
+                    //     data.forEach((procedureData: any) => {
+                    //         const procedure = new Procedure(procedureData);
+                    //         this._procedures.push(procedure);
+                    //     });
+                    //}
 
-                    var _tempProcedures = new Array<Procedure>();
-                    this._procedures.forEach(function(element){
-                        var isDuplicate : boolean = true;
-                      //if(this._filterProcedures){
-                        if(_tempProcedures.length > 0){
-                            _tempProcedures.some(function(item){
-                                if(item.episode !== element.episode){
-                                   isDuplicate = false;
-                                }
-                                else{
-                                    isDuplicate = true;
-                                    return true;
-                                }
-                            })
-                            if(!isDuplicate){
-                                _tempProcedures.push(element);
-                            }
-                        }else{
-                            _tempProcedures.push(element);
-                        }
-                        
-                    })
-                    this._filterProcedures = _tempProcedures;
-
-                    return this._filterProcedures;
+                    return this._procedures;
                 })
                 .catch((error: Kinvey.BaseError) => {
                     alert({
