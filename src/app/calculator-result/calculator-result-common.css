@@ -20,20 +20,21 @@
 }
 
 .card-title {
-    font-size: 28;
+    font-size: 20;
     font-weight: bold;
     color: black;
 }
 
 .card-label {
-    font-size: 12;
+    font-size: 14;
     margin: 5 0;
-    font-weight: 300;
+    font-weight: 400;
     color: black;
 }
 
 .card-price-range {
     font-size: 24;
+    font-weight: bold;
     color: #5859D4;
     padding: 5 0;
 }
@@ -45,11 +46,67 @@
     border-radius: 3;
     text-align: center;
     padding: 5 15;
-    font-weight: 300;
+    font-weight: bold;
 }
 
 .breakdown-text {
     color: black;
     font-size: 12;
     font-weight: 300;
+}
+
+.page-title {
+    font-size: 18;
+    font-weight: bold;
+    padding: 5 15;
+    color: black;
+}
+
+.page-subtitle {
+    font-weight: 16px;
+    font-weight: bold;
+    color: black;
+    padding: 5 15;
+}
+
+.page-description {
+    padding: 5 15;
+}
+
+.card-blue-title {
+    font-size: 16;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 10;
+}
+
+.cost {
+    color:blue;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 10;
+    padding-bottom: 5;
+}
+
+.rate {
+    color: blue;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5 15;
+}
+
+.charges {
+    padding: 10 15;
+}
+
+.service {
+    padding: 10 15;
+    color: blue;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.total-rate {
+    color: blue;
+    font-size: 14px;padding: 5 15;
 }

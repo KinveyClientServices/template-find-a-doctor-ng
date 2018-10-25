@@ -5,6 +5,8 @@ import { ObservableArray } from "tns-core-modules/data/observable-array/observab
 import { EstimateService } from "../shared/services/estimate.service";
 import { Estimate } from "../shared/models/estimate.model";
 import { Procedure } from "../shared/models/procedure.model";
+import { SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
+import {OOPServices} from "../shared/models/OOP.model";
 
 @Component({
 	selector: "CalculatorResultComponent",
@@ -15,10 +17,36 @@ import { Procedure } from "../shared/models/procedure.model";
 export class CalculatorResultComponent {
 	procedure: Procedure;
 	title: string;
+	procedureDesc: string;
 	isLoading: boolean;
 	resultItems: Array<Estimate>;
-	lowestPrice: number;
-	highestPrice: number;
+	facilityCharge: string;
+	professionalCharge: string;
+	cost: number;
+	calculation: string;
+	show: boolean;
+	showHideBtn: string;
+	counter: number;
+	pos: string;
+	facilityCharges: OOPServices;
+	professionalCharges: OOPServices;
+	totalCharges: Array<any>;
+
+	//low,average,high variables
+	lowCost: number;
+	avgCost: number;
+	highCost: number;
+	lowCalc: string;
+	avgCalc: string;
+	highCalc: string;
+	lowFacilityCharge: string;
+	avgFacilityCharge: string;
+	highFacilityCharge: string;
+	lowProfessionalCharge: string;
+	avgProfessionalCharge: string;
+	highProfessionalCharge: string;
+	coInsuranceFacility: string;
+	CoInsuranceProfessional: string;
 
 	constructor(
 		private _estimateService: EstimateService,
@@ -28,15 +56,82 @@ export class CalculatorResultComponent {
 
 	ngOnInit(): void {
 		this.isLoading = true;
-
+		this.counter=0;
+		this.show = false;
+		this.showHideBtn = "Show Calculation v";
 		this._activatedRoute.params.subscribe(params => {
 			params = params || {};
 			this.procedure = <Procedure>params;
 			this.title = this.procedure.episode;
-			this._estimateService.getEstimates(this.procedure)
+			this._estimateService.getOOPDetails(this.procedure)
 				.then(estimates => {
 					this.isLoading = false;
 					this.resultItems = estimates;
+					if(estimates && estimates.length) {
+						this.procedureDesc = estimates[0].episodeDesc;
+						this.pos = estimates[0].allowedAmt[0].POS;
+						estimates.forEach((oop) => {
+							if(oop.service === "Facility Charges") this.facilityCharges = oop;
+							else if(oop.service === "Professional Charges") this.professionalCharges = oop;
+							else this.totalCharges = oop.totals;
+						});
+						if(this.totalCharges && this.totalCharges.length) {
+							this.totalCharges.forEach((charge) => {
+								switch(charge.label) {
+									case "Low":
+									{
+										this.lowCost = charge.oopTotal;
+										this.lowCalc = charge.narrative;
+										break;
+									}
+									case "Average":
+									{
+										this.avgCost = charge.oopTotal;
+										this.avgCalc = charge.narrative;
+										break;
+									}
+									case "High":
+									{
+										this.highCost = charge.oopTotal;
+										this.highCalc = charge.narrative;
+										break;
+									}
+								}
+							});
+						}
+						if(this.facilityCharges.allowedAmt && this.facilityCharges.allowedAmt.length) {
+							this.facilityCharges.allowedAmt.forEach((amt) => {
+								switch(amt.label) {
+									case "Low": {
+										this.lowFacilityCharge = amt.serviceCost;
+										this.coInsuranceFacility = amt.benefitValue;
+										break;
+									} 
+									case "Average": this.avgFacilityCharge = amt.serviceCost;
+									break;
+									case "High": this.highFacilityCharge = amt.serviceCost;
+									break;
+								}
+							});
+							this.professionalCharges.allowedAmt.forEach((amt) => {
+								switch(amt.label) {
+									case "Low": {
+										this.lowProfessionalCharge = amt.serviceCost;
+										this.CoInsuranceProfessional = amt.benefitValue;
+										break;
+									}
+									case "Average": this.avgProfessionalCharge = amt.serviceCost;
+									break;
+									case "High": this.highProfessionalCharge = amt.serviceCost;
+									break;
+								}
+							});
+						}
+						this.cost = this.avgCost;
+						this.calculation = this.avgCalc;
+						this.facilityCharge = this.avgFacilityCharge;
+						this.professionalCharge = this.avgProfessionalCharge;
+					}
 				});
 		});
 	}
@@ -45,11 +140,35 @@ export class CalculatorResultComponent {
 		this._routerExtensions.backToPreviousPage();
 	}
 
-	getLowestPrice(estimates: Array<Estimate>): number {
-		return estimates ? Math.min(...estimates.map(estimate => estimate.priceLow)) : 0;
-	}
-
-	getHighestPrice(estimates: Array<Estimate>): number {
-		return estimates ? Math.max(...estimates.map(estimate => estimate.priceHigh)) : 0;
+	onShowHideTap() {
+		this.counter++;
+		if(this.counter%2 === 0) {
+			this.show = false;
+			this.showHideBtn = "Show Calculation v";
+		} else {
+			this.show = true;
+			this.showHideBtn = "Hide Calculation ^";
+		}
+	}            
+	
+	onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
+		if(args.newIndex === 0) {
+			this.cost = this.lowCost;
+			this.calculation = this.lowCalc;
+			this.facilityCharge = this.lowFacilityCharge;
+			this.professionalCharge = this.lowProfessionalCharge;
+		}
+		else if(args.newIndex === 1) {
+			this.cost = this.avgCost;
+			this.calculation = this.avgCalc;
+			this.facilityCharge = this.avgFacilityCharge;
+			this.professionalCharge = this.avgProfessionalCharge;
+		}
+		else if(args.newIndex === 2) {
+			this.cost = this.highCost;
+			this.calculation = this.highCalc;
+			this.facilityCharge = this.highFacilityCharge;
+			this.professionalCharge = this.highProfessionalCharge;
+		}
 	}
 }

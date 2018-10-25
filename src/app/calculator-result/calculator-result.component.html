@@ -1,29 +1,82 @@
-<ActionBar class="action-bar" [title]="title">
+<ActionBar class="action-bar" title="Service Cost Estimate">
     <NavigationButton android.systemIcon="ic_menu_back" (tap)="onBackButtonTap()"></NavigationButton>
 </ActionBar>
 <GridLayout>
     <ScrollView>
         <StackLayout class="c-bg-lg p-b-10">
-            <Label class="sub-title m-t-15" text="Estimated Out-of-Pocket Range"></Label>
-
-            <Label class="price-sub-title m-15" 
-                [text]="(getLowestPrice(resultItems) | currency:'USD':'symbol':'1.0-0') + '-' + (getHighestPrice(resultItems) | currency:'USD':'symbol':'1.0-0')"></Label>
-
-            <GridLayout *ngFor="let estimate of resultItems">
-                <GridLayout rows="auto, auto, auto, auto" columns="*, auto" class="card">
-                    <Label row="0" colSpan="2" class="card-title" textWrap="true" [text]="estimate.label"></Label>
-                    <StackLayout row="1" col="0" verticalAlignment="middle">
-                        <Label class="card-label" text="Range"></Label>
-                        <Label class="card-price-range" [text]="(estimate.priceLow | currency:'USD':'symbol':'1.0-0') + '-' + (estimate.priceHigh | currency:'USD':'symbol':'1.0-0')"></Label>
-                    </StackLayout>
-                    <StackLayout row="1" col="1" verticalAlignment="middle">
-                        <Label class="card-label" text="Average cost"></Label>
-                        <Label class="card-price-avg" [text]="estimate.priceAvg | currency:'USD':'symbol':'1.0-0'"></Label>
-                    </StackLayout>
-                    <StackLayout row="2" col="0" colSpan="2" class="hr-light m-15"></StackLayout>
-                    <Label row="3" colSpan="2" class="breakdown-text" textWrap="true" [text]="estimate.breakdown"></Label>
+            
+            <Label [text]="title" class="page-title"></Label>
+            <Label [text]="procedureDesc" class="page-description" textwrap="true"></Label>
+            <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
+            <StackLayout>
+                <GridLayout rows="auto,auto" columns="*,*,*">
+                    <Label col="0" colspan="2" text="Place of Service" class="page-title"></Label>
+                    <Label col="14" text="&#xf05a;" class="fa fa-medkit page-description" style="text-align: right; color:blue;"></Label>
                 </GridLayout>
-            </GridLayout>
+                <Label [text]="pos" class="page-title"></Label>
+            <StackLayout>
+                <Label text="Your Estimated Out Of Pocket Cost" class="page-title" style="text-align: center;"></Label>
+                <TabView selectedIndex="1" (selectedIndexChanged)="onSelectedIndexChanged($event)">
+                    <StackLayout *tabItem="{title: 'Low'}">
+                               
+                    </StackLayout>
+                    <StackLayout *tabItem="{title: 'Average'}">
+                        
+                    </StackLayout>
+                    <StackLayout *tabItem="{title: 'High'}">
+                        
+                    </StackLayout>
+                </TabView>
+                <label [text]="'$ ' + cost" class="cost"></label>
+                <label class="page-description" *ngIf="show" textWrap="true" [text]="calculation"></label>
+                <button [text]="showHideBtn" (tap)="onShowHideTap()" class="fa-fa muted find-button platform-button"></button>
+            </StackLayout>
+            <StackLayout>
+                <Label text="Cost breakdown"  class="page-title"></Label>
+                <GridLayout rows="auto,auto" columns="*,*,*">
+                    <label row="0" col="2" text="Contracted rate  &#xf05a;" class="fa fa-medkit" style="color:blue;"></label>
+                    <label row="1" col="0" colspan="2" text="Facility Charges" class="page-title"></label>
+                    <label row="1" col="2" [text]="'$' + facilityCharge" class="rate"></label>
+                </GridLayout>
+                <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
+                <label text="Your responsibility for this service" class="charges"></label>
+                <label [text]="CoInsuranceProfessional + '% Co-Insurance'" class="service"></label>
+                <GridLayout rows="auto,auto" columns="*,*,*">
+                    <label text="Professional Service" class="page-title" colspan="2"></label>
+                    <label [text]="'$' +  professionalCharge" col="2" class="rate"></label>
+                </GridLayout>
+                <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
+                <label text="Your responsibility for this service" class="charges"></label>
+                <label [text]="coInsuranceFacility + '% Co-Insurance'" class="service"></label>
+                <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
+                <GridLayout rows="auto,auto" columns="*,*,*">
+                    <label text="Spend to date" row="0" col="0" colspan="2" class="page-title"></label>
+                    <label text="Before Estimate  &#xf05a;" row="0" col="2" class="fa fa-medkit" style="color:blue;"></label>
+                </GridLayout>
+                <GridLayout rows="2*,*,3*" columns="*,*,*">
+                    <label text="Individual" row="0" col="0" class="total-rate"></label>
+                    <label text="Remaining/Total" row="0" col="2"></label>
+
+                    <label text="Deductible" row="1" col="0" class="page-description"></label>
+                    <label *ngIf="facilityCharges" [text]="'$' + facilityCharges.dedIndRem + '/' + '$' + facilityCharges.dedIndLimit" row="1" col="2" class="total-rate"></label>
+
+                    <label text="Out of pocket Max (YTD)" row="2" col="0" colspan="2" class="page-description"></label>
+                    <label *ngIf="facilityCharges" [text]="'$' + facilityCharges.oopIndRem + '/' + '$' + facilityCharges.oopIndLimit" row="2" col="2" class="total-rate"></label>
+                </GridLayout>
+                <GridLayout rows="2*,*,3*" columns="*,*,*">
+                    <label text="Family" row="0" col="0" class="total-rate"></label>
+                    <label text="Remaining/Total" row="0" col="2"></label>
+
+                    <label text="Deductible(YTD)" row="1" col="0" class="page-description"></label>
+                    <label *ngIf="facilityCharges" [text]="'$' + facilityCharges.dedFamRem + '/' + '$' + facilityCharges.dedFamLimit" row="1" col="2" class="total-rate"></label>
+
+                    <label text="Out of pocket Max (YTD)" row="2" col="0" colspan="2" class="page-description"></label>
+                    <label *ngIf="facilityCharges" [text]="'$' + facilityCharges.oopFamRem + '/' + '$' + facilityCharges.oopFamLimit" row="2" col="2" rowspan="3" class="total-rate"></label>
+                </GridLayout>
+            </StackLayout>
+            <label class="page-description" style="font-size: 16px;" textwrap="true" text="This is an estimate based on your insurance plan for indicative purpose and not final estimation"></label>
+            </StackLayout>
+            
         </StackLayout>
     </ScrollView>
     <GridLayout class="c-bg-lg" *ngIf="isLoading" width="100%" height="100%">
