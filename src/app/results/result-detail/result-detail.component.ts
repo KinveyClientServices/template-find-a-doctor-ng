@@ -1,4 +1,4 @@
-import { Component, NgModuleRef, ViewContainerRef } from "@angular/core";
+import { Component, NgModuleRef, OnInit, ViewContainerRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Kinvey } from "kinvey-nativescript-sdk";
 import { ModalDialogOptions, ModalDialogService } from "nativescript-angular/modal-dialog";
@@ -17,7 +17,7 @@ import { CalendarModalViewComponent } from "./calendar-modal";
 	templateUrl: "./result-detail.component.html",
 	styleUrls: ["../results-common.css"]
 })
-export class ResultDetailComponent {
+export class ResultDetailComponent implements OnInit {
 	rapidProviderData: RapidHealthProviders;
 	isLoading: boolean;
 	modalIsShown: boolean;
@@ -69,6 +69,7 @@ export class ResultDetailComponent {
 		if (formatted.endsWith("\n\n")) {
 			formatted = formatted.substring(0, formatted.length - 2);
 		}
+
 		return formatted;
 	}
 

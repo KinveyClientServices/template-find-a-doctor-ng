@@ -3,17 +3,20 @@
 </ActionBar>
 <GridLayout>
     <ScrollView>
-        <StackLayout class="c-bg-lg p-b-10">
-            
+        <StackLayout >
+                <StackLayout class="c-bg-lg p-b-10">
             <Label [text]="title" class="page-title"></Label>
             <Label [text]="procedureDesc" class="page-description" textwrap="true"></Label>
-            <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
+                </StackLayout>
+            <StackLayout row="2" colspan="3" class="hr-light">                
+            </StackLayout>
             <StackLayout>
-                <GridLayout rows="auto,auto" columns="*,*,*">
+                <GridLayout rows="auto,auto" columns="*,*,*,*,*">
                     <Label col="0" colspan="2" text="Place of Service" class="page-title"></Label>
-                    <Label col="14" text="&#xf05a;" class="fa fa-medkit page-description" style="text-align: right; color:blue;"></Label>
+                    <!-- <Label col="14" text="&#xf05a;" class="fa fa-medkit page-description" style="text-align: right; color:blue;"></Label> -->
+                    <Label col="2" colspan="3" [text]="pos" class="page-title"></Label>
                 </GridLayout>
-                <Label [text]="pos" class="page-title"></Label>
+                
             <StackLayout>
                 <Label text="Your Estimated Out Of Pocket Cost" class="page-title" style="text-align: center;"></Label>
                 <TabView selectedIndex="1" (selectedIndexChanged)="onSelectedIndexChanged($event)">
@@ -39,15 +42,19 @@
                     <label row="1" col="2" [text]="'$' + facilityCharge" class="rate"></label>
                 </GridLayout>
                 <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
-                <label text="Your responsibility for this service" class="charges"></label>
+                <StackLayout class="c-bg-lg p-b-10">
+                <label text="Your responsibility for this service" class="charges text-muted p-b-10 p-t-15"></label>
                 <label [text]="CoInsuranceProfessional + '% Co-Insurance'" class="service"></label>
+            </StackLayout>
                 <GridLayout rows="auto,auto" columns="*,*,*">
                     <label text="Professional Service" class="page-title" colspan="2"></label>
                     <label [text]="'$' +  professionalCharge" col="2" class="rate"></label>
                 </GridLayout>
                 <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
-                <label text="Your responsibility for this service" class="charges"></label>
+            <StackLayout class="c-bg-lg p-b-10">
+                <label text="Your responsibility for this service" class="charges text-muted p-b-10 p-t-15"></label>
                 <label [text]="coInsuranceFacility + '% Co-Insurance'" class="service"></label>
+            </StackLayout>
                 <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
                 <GridLayout rows="auto,auto" columns="*,*,*">
                     <label text="Spend to date" row="0" col="0" colspan="2" class="page-title"></label>
@@ -74,7 +81,9 @@
                     <label *ngIf="facilityCharges" [text]="'$' + facilityCharges.oopFamRem + '/' + '$' + facilityCharges.oopFamLimit" row="2" col="2" rowspan="3" class="total-rate"></label>
                 </GridLayout>
             </StackLayout>
+            <StackLayout class="c-bg-lg p-b-10">
             <label class="page-description" style="font-size: 16px;" textwrap="true" text="This is an estimate based on your insurance plan for indicative purpose and not final estimation"></label>
+            </StackLayout>
             </StackLayout>
             
         </StackLayout>
