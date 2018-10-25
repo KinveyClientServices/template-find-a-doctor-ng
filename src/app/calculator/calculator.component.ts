@@ -8,6 +8,7 @@ import { isAndroid } from "tns-core-modules/ui/page/page";
 import { SearchBar } from "tns-core-modules/ui/search-bar";
 import { Procedure } from "../shared/models/procedure.model";
 import { ProcedureService } from "../shared/services/procedure.service";
+import { observable } from "rxjs";
 
 @Component({
     selector: "CalculatorComponent",
@@ -45,15 +46,13 @@ export class CalculatorComponent implements OnInit {
     ngOnInit(): void {
        // this.isLoading = true;
         this.procedureFilteringFunc = this.getFilteringFunc();
-
         this._procedureService.getProcedures().then((procedures) => {
             this.procedures = new ObservableArray<Procedure>(procedures);
             this.proceduresListView.listView.items = procedures;
             this.proceduresListView.listView.refresh();
-         //   this.isLoading = false;
         });
+        
     }
-
     onSearchBarLayoutChange(args) {
         const sb = <SearchBar>args.object;
 
@@ -66,19 +65,23 @@ export class CalculatorComponent implements OnInit {
         this.procedures.forEach((item) => item.selected = false);
         const selectedItems = args.object.getSelectedItems();
         const item = selectedItems && selectedItems[0];
-
         if (item) {
             item.selected = true;
             this.procedure = item;
         }
-
         this.searchBar.nativeElement.dismissSoftInput();
     }
 
     getFilteringFunc(): (item: Procedure) => boolean {
         const filterFunc = (item: Procedure): boolean => {
-            return item.episode.toLowerCase().includes(this.proceduresFilter.toLowerCase()) ||
+            if(item.episode && item.keywords){
+                return item.episode.toLowerCase().includes(this.proceduresFilter.toLowerCase()) ||
                 item.keywords.toLowerCase().includes(this.proceduresFilter.toLowerCase());
+            } else if(item.keywords){
+                return item.keywords.toLowerCase().includes(this.proceduresFilter.toLowerCase());
+            } else if(item.episode){
+                return item.episode.toLowerCase().includes(this.proceduresFilter.toLowerCase());
+            }
         };
 
         return filterFunc;
