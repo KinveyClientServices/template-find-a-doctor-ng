@@ -63,13 +63,14 @@
 }
 
 .page-subtitle {
-    font-weight: 16px;
+    font-size: 16px;
     font-weight: bold;
     color: black;
     padding: 5 15;
 }
 
 .page-description {
+    font-size: 16px;
     padding: 5 15;
 }
 
@@ -108,7 +109,8 @@
 
 .total-rate {
     color: blue;
-    font-size: 14px;padding: 5 15;
+    font-size: 16px;
+    padding: 5 15;
 }
 
 .find-button {

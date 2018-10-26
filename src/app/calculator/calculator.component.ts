@@ -77,8 +77,14 @@ export class CalculatorComponent implements OnInit {
 
     getFilteringFunc(): (item: Procedure) => boolean {
         const filterFunc = (item: Procedure): boolean => {
-            return item.episode.toLowerCase().includes(this.proceduresFilter.toLowerCase()) ||
+            if(item.episode && item.keywords){
+                return item.episode.toLowerCase().includes(this.proceduresFilter.toLowerCase()) ||
                 item.keywords.toLowerCase().includes(this.proceduresFilter.toLowerCase());
+            }else if(item.keywords){
+                return item.keywords.toLowerCase().includes(this.proceduresFilter.toLowerCase());
+            } else if(item.episode){
+                return item.episode.toLowerCase().includes(this.proceduresFilter.toLowerCase());
+            }
         };
 
         return filterFunc;
