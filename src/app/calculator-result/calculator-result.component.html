@@ -14,7 +14,7 @@
                 <GridLayout rows="auto,auto" columns="*,*,*,*,*">
                     <Label col="0" colspan="2" text="Place of Service" class="page-title"></Label>
                     <!-- <Label col="14" text="&#xf05a;" class="fa fa-medkit page-description" style="text-align: right; color:blue;"></Label> -->
-                    <Label col="2" colspan="3" [text]="pos" class="page-title"></Label>
+                    <Label col="2" colspan="3" [text]="pos" class="page-title right-align"></Label>
                 </GridLayout>
                 
             <StackLayout>
@@ -32,14 +32,15 @@
                 </TabView>
                 <label [text]="'$ ' + cost" class="cost"></label>
                 <label class="page-description" *ngIf="show" textWrap="true" [text]="calculation"></label>
-                <button [text]="showHideBtn" (tap)="onShowHideTap()" class="fa-fa muted find-button platform-button"></button>
+                <button *ngIf="showHideBtn" text="Show Calculation &#xf107;" (tap)="onShowHideTap()" class="fa fa-medkit find-button platform-button"></button>
+                <button *ngIf="!showHideBtn" text="Hide Calculation &#xf106;" (tap)="onShowHideTap()" class="fa fa-medkit find-button platform-button"></button>
             </StackLayout>
             <StackLayout>
                 <Label text="Cost breakdown"  class="page-title"></Label>
                 <GridLayout rows="auto,auto" columns="*,*,*">
                     <label row="0" col="2" text="Contracted rate  &#xf05a;" class="fa fa-medkit" style="color:blue;"></label>
                     <label row="1" col="0" colspan="2" text="Facility Charges" class="page-title"></label>
-                    <label row="1" col="2" [text]="'$' + facilityCharge" class="rate"></label>
+                    <label row="1" col="2" [text]="'$' + facilityCharge" class="rate right-align"></label>
                 </GridLayout>
                 <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
                 <StackLayout class="c-bg-lg p-b-10">
@@ -48,7 +49,7 @@
             </StackLayout>
                 <GridLayout rows="auto,auto" columns="*,*,*">
                     <label text="Professional Service" class="page-title" colspan="2"></label>
-                    <label [text]="'$' +  professionalCharge" col="2" class="rate"></label>
+                    <label [text]="'$' +  professionalCharge" col="2" class="rate right-align"></label>
                 </GridLayout>
                 <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
             <StackLayout class="c-bg-lg p-b-10">
@@ -58,7 +59,7 @@
                 <StackLayout row="2" colspan="3" class="hr-light"></StackLayout>
                 <GridLayout rows="auto,auto" columns="*,*,*">
                     <label text="Spend to date" row="0" col="0" colspan="2" class="page-title"></label>
-                    <label text="Before Estimate  &#xf05a;" row="0" col="2" class="fa fa-medkit" style="color:blue;padding-top:5px;"></label>
+                    <label text="Before Estimate  &#xf05a;" row="0" col="2" class="fa fa-medkit" style="color:blue;padding-top:25px;"></label>
                 </GridLayout>
                 <GridLayout rows="2*,*,3*" columns="*,*,*">
                     <label text="Individual" row="0" col="0" class="total-rate"></label>

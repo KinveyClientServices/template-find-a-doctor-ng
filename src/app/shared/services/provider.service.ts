@@ -21,7 +21,7 @@ export class ProviderService {
         if (zipCode) {
             (specialty ? query.and() : query).equalTo("zipcode", zipCode);
         }
-        if (latLong) {
+        if (latLong && !zipCode) {
             (specialty ? query.and() : query).equalTo("lat_lon", latLong);
         }
 

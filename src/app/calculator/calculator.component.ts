@@ -40,6 +40,7 @@ export class CalculatorComponent implements OnInit {
         if (this.procedure) {
             this.procedures.forEach((item) => item.selected = false);
         }
+        this.procedure = "";
     }
 
     ngOnInit(): void {

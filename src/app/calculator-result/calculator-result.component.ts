@@ -24,7 +24,7 @@ export class CalculatorResultComponent implements OnInit {
 	cost: number;
 	calculation: string;
 	show: boolean;
-	showHideBtn: string;
+	showHideBtn: boolean;
 	counter: number;
 	pos: string;
 	facilityCharges: OOPServices;
@@ -57,7 +57,7 @@ export class CalculatorResultComponent implements OnInit {
 		this.isLoading = true;
 		this.counter = 0;
 		this.show = false;
-		this.showHideBtn = "Show Calculation v";
+		this.showHideBtn = true;
 		this._activatedRoute.params.subscribe((params) => {
 			params = params || {};
 			this.procedure = <Procedure> params;
@@ -153,10 +153,10 @@ export class CalculatorResultComponent implements OnInit {
 		this.counter++;
 		if (this.counter % 2 === 0) {
 			this.show = false;
-			this.showHideBtn = "Show Calculation v";
+			this.showHideBtn = true;
 		} else {
 			this.show = true;
-			this.showHideBtn = "Hide Calculation ^";
+			this.showHideBtn = false;
 		}
 	}
 

@@ -149,6 +149,12 @@ export class SearchComponent implements OnInit {
     // tslint:disable-next-line:no-this-assignment
     let that = this;
 
+    if(this.zipCode && this.zipCode.length < 5)
+    {
+        alert("Please enter the valid zip code.");
+
+        return;
+    }
     if (this.specialty === undefined || this.specialty === "") {
         //alert("Please select a specialty to find physicians near you.");
         alert("Please Select specialty to get list of physicians near you");
