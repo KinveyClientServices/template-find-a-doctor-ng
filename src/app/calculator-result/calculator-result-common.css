@@ -121,3 +121,29 @@
 .right-align {
     text-align: right;
 }
+
+.center-align {
+    text-align: center;
+}
+
+.blue-text {
+    color:blue;
+}
+
+.before-estimate {
+    color:blue;
+    padding-top: 25px;
+}
+
+.tabs {
+    background-color:#004976;
+}
+
+.tab-text {
+    text-align: center;
+    font-size: 18;
+    font-weight: bold;
+    color: white;
+    padding-top: 10;
+    padding-bottom: 10;
+}

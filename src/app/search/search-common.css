@@ -27,3 +27,7 @@
 .outdated {
     opacity: 0.3;
 }
+
+.zip-code {
+    font-size: 15px;
+}

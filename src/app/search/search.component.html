@@ -14,11 +14,10 @@
                 <Label text="Location &#xf041;" class=" fa fa-medkit text-muted text-uppercase t-14 p-l-15 p-t-10 p-b-7"></Label>
                 <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
-            <StackLayout class="c-bg-white">
+            <StackLayout class="c-bg-white zip-code">
                 <GridLayout rows="auto" columns="auto,*">
                     <Label text="Zip Code" 
                     class="itemLabel t-19 p-l-15 p-b-10 p-t-10" 
-                    style="font-size:16px;"
                     (tap) = "onSelectCurrentLocationTap()"></Label>
  
                     <TextField (textChange)="onZipCodeChange($event)" hint="Enter ZIP code" keyboardType="number" class="pull-right m-r-15" col="2" [(ngModel)]="zipCode"></TextField>

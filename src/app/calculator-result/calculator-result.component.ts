@@ -46,6 +46,9 @@ export class CalculatorResultComponent implements OnInit {
 	highProfessionalCharge: string;
 	coInsuranceFacility: string;
 	coInsuranceProfessional: string;
+	lowTap: boolean;
+	avgTap: boolean;
+	highTap: boolean;
 
 	constructor(
 		private _estimateService: EstimateService,
@@ -58,6 +61,9 @@ export class CalculatorResultComponent implements OnInit {
 		this.counter = 0;
 		this.show = false;
 		this.showHideBtn = true;
+		this.lowTap = false;
+		this.avgTap = true;
+		this.highTap = false;
 		this._activatedRoute.params.subscribe((params) => {
 			params = params || {};
 			this.procedure = <Procedure> params;
@@ -74,10 +80,13 @@ export class CalculatorResultComponent implements OnInit {
 								this.facilityCharges = oop;
 							} else if (oop.service === "Professional Charges") {
 								this.professionalCharges = oop;
-							} else {
-								this.totalCharges = oop.totals;
+							} else {	
+								if(oop.totals) {
+									this.totalCharges = oop.totals;
+								}
 							}
 						});
+						if(this.totalCharges !== undefined) {
 						if (this.totalCharges && this.totalCharges.length) {
 							this.totalCharges.forEach((charge) => {
 								switch (charge.label) {
@@ -102,6 +111,15 @@ export class CalculatorResultComponent implements OnInit {
 								}
 							});
 						}
+					}else {
+							this.lowCost = 0;
+							this.lowCalc = "Your total out of pocket cost estimate: $0";
+							this.avgCost = 0;
+							this.avgCalc = "Your total out of pocket cost estimate: $0";
+							this.highCost = 0;
+							this.highCalc = "Your total out of pocket cost estimate: $0";
+						}
+						if(this.facilityCharges !== undefined) {
 						if (this.facilityCharges.allowedAmt && this.facilityCharges.allowedAmt.length) {
 							this.facilityCharges.allowedAmt.forEach((amt) => {
 								switch (amt.label) {
@@ -119,6 +137,14 @@ export class CalculatorResultComponent implements OnInit {
 										break;
 								}
 							});
+						}
+					} else {
+							this.lowFacilityCharge = "0";
+							this.coInsuranceFacility = "0";
+							this.avgFacilityCharge = "0";
+							this.highFacilityCharge = "0";
+						}
+						if(this.professionalCharges !== undefined) {
 							this.professionalCharges.allowedAmt.forEach((amt) => {
 								switch (amt.label) {
 									case "Low":
@@ -135,7 +161,13 @@ export class CalculatorResultComponent implements OnInit {
 										break;
 								}
 							});
-						}
+						} else {
+								this.lowProfessionalCharge = "0";
+								this.coInsuranceProfessional = "0";
+								this.avgProfessionalCharge = "0";
+								this.highProfessionalCharge = "0";
+							}
+						
 						this.cost = this.avgCost;
 						this.calculation = this.avgCalc;
 						this.facilityCharge = this.avgFacilityCharge;
@@ -160,22 +192,31 @@ export class CalculatorResultComponent implements OnInit {
 		}
 	}
 
-	onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
-		if (args.newIndex === 0) {
-			this.cost = this.lowCost;
-			this.calculation = this.lowCalc;
-			this.facilityCharge = this.lowFacilityCharge;
-			this.professionalCharge = this.lowProfessionalCharge;
-		} else if (args.newIndex === 1) {
-			this.cost = this.avgCost;
-			this.calculation = this.avgCalc;
-			this.facilityCharge = this.avgFacilityCharge;
-			this.professionalCharge = this.avgProfessionalCharge;
-		} else if (args.newIndex === 2) {
-			this.cost = this.highCost;
-			this.calculation = this.highCalc;
-			this.facilityCharge = this.highFacilityCharge;
-			this.professionalCharge = this.highProfessionalCharge;
-		}
+	onLowTap() {
+		this.changedValuesOnTap(this.lowCost, this.lowCalc, this.lowFacilityCharge, this.lowProfessionalCharge);
+		this.tapLine(true, false, false);
+	}
+
+	onAverageTap() {
+		this.changedValuesOnTap(this.avgCost, this.avgCalc, this.avgFacilityCharge, this.avgProfessionalCharge);
+		this.tapLine(false, true, false);
+	}
+
+	onHighTap() {
+		this.changedValuesOnTap(this.highCost, this.highCalc, this.highFacilityCharge, this.highProfessionalCharge);
+		this.tapLine(false, false, true);
+	}
+
+	tapLine(lowTap, avgTap, highTap) {
+		this.lowTap = lowTap;
+		this.avgTap = avgTap;
+		this.highTap = highTap;
+	}
+
+	changedValuesOnTap(cost, calculation, facilityCharge, professionalCharge) {
+		this.cost = cost;
+		this.calculation = calculation;
+		this.facilityCharge = facilityCharge;
+		this.professionalCharge = professionalCharge;
 	}
 }
