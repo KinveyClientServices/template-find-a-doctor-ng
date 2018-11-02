@@ -12,12 +12,12 @@
             </StackLayout>
             <StackLayout>
                 <GridLayout rows="auto,auto" columns="*,*,*,*,*">
-                    <Label col="0" colspan="3" text="Place of Service" class="page-title"></Label>
+                    <Label col="0" colspan="3" text="Place of Service :" class="pos"></Label>
                     <!-- <Label col="14" text="&#xf05a;" class="fa fa-medkit page-description" style="text-align: right; color:blue;"></Label> -->
-                    <Label col="2" colspan="3" [text]="pos" class="procedure-desc"></Label>
+                    <Label col="2" colspan="3" [text]="pos" class="procedure-desc" textwrap="true"></Label>
                 </GridLayout>
             <StackLayout>
-                <Label text="Your Estimated Out Of Pocket Cost" class="page-title center-align"></Label>
+                <Label text="Your Estimated Out Of Pocket Cost" class="page-title center-align" textwrap="true"></Label>
                 <GridLayout rows="auto,auto" columns="*,*,*" class="tabs">
                     <Label text="LOW" col="0" [ngClass]="lowTap? 'tab-text-clicked': 'tab-text'" (tap)="onLowTap($event)"></Label>
                     <StackLayout *ngIf="lowTap" row="1" col="0" class="hr-light"></StackLayout>
