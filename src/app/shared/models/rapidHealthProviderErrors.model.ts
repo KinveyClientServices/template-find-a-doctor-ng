@@ -59,6 +59,7 @@ export class RapidHealthProviderErrors implements Entity {
         lmt: string;
     };
     public status: string;
+    public useremail: string;
 
     constructor (options: any) {
         this.uuid = options.uuid;

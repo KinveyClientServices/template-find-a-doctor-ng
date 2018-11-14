@@ -57,51 +57,43 @@
                         <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
 
                         <Label text="Residencies:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
-                        <RadListView [items]="item.residencies" class="p-l-15 t-17">
-                            <ng-template tkListItemTemplate let-item="item">
-                                <GridLayout rows="auto,auto,auto" columns="*,*">
-                                    <Label row="0" col="0" text="Institution name:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
-                                    <TextView *ngIf="item.institution_name" row="0" col="1" [(ngModel)]="item.institution_name"></TextView>
-                                    <Label row="1" col="0" text="Type:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
-                                    <TextView *ngIf="item.type" row="1" col="1" [(ngModel)]="item.type"></TextView>
-                                    <StackLayout row="2" col="0" colspan="2" class="hr-light"></StackLayout>
-                                </GridLayout>
-                            </ng-template>
-                    </RadListView>
-                    <StackLayout class="hr-light"></StackLayout>
-                    <GridLayout rows="auto,auto" columns="*,*" class="p-l-15 t-17">
-                        <Label row="0" col="0" text="Degree:" class="c-black p-b-10 p-t-15"></Label>
-                        <TextField row="0" col="1" id="txtfldDegree" [(ngModel)]="item.degree"></TextField>
-                    </GridLayout>
-                    
-                    <StackLayout class="hr-light"></StackLayout>
-                    <Label text="Contact Information" class="p-l-15 p-t-20 p-b-10 c-bg-lg text-muted text-uppercase" textWrap="true"></Label>
-                    <StackLayout class="hr-light"></StackLayout>
-                    <GridLayout rows="auto,auto" columns="*,*" class="p-l-15 t-17">
-                        <Label row="0" col="0" text="Phone:" class="c-black p-b-10 p-t-15"></Label>
-                        <TextField row="0" col="1" id="txtfldPhone" [(ngModel)]="item.phone" textWrap="true"></TextField>
-                    </GridLayout>
-                    
-                    <StackLayout class="hr-light"></StackLayout>
-                    <Label text="Locations:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
-                    <RadListView  class="p-l-15 t-17" [items]="item.locations">
-                        <ng-template tkListItemTemplate let-item="item">
-                            <GridLayout rows="auto,auto,auto,auto,auto,auto,auto" columns="*,*">
-                                <Label *ngIf="item.address_lines && item.address_lines.length" class="c-black p-b-10 p-t-15 p-l-15" row="0" col="0" text="Address Lines"></Label>
-                                <TextView *ngIf="item.address_lines[0]" row="0" col="1" [(ngModel)]="item.address_lines[0]"></TextView>
-                                <TextView *ngIf="item.address_lines[1]" row="1" col="1" [(ngModel)]="item.address_lines[1]"></TextView>
-                                <Label *ngIf="item.city" class="c-black p-b-10 p-t-15 p-l-15" row="2" col="0" text="City"></Label>
-                                <TextView *ngIf="item.city" row="2" col="1" [(ngModel)]="item.city"></TextView>
-                                <Label *ngIf="item.state" class="c-black p-b-10 p-t-15 p-l-15" row="3" col="0" text="State"></Label>
-                                <TextView *ngIf="item.state" row="3" col="1" [(ngModel)]="item.state"></TextView>
-                                <Label *ngIf="item.zipcode" class="c-black p-b-10 p-t-15 p-l-15" row="4" col="0" text="Zipcode"></Label>
-                                <TextView *ngIf="item.zipcode" row="4" col="1" [(ngModel)]="item.zipcode"></TextView>
-                                <Label *ngIf="item.phone" class="c-black p-b-10 p-t-15 p-l-15" row="5" col="0" text="Phone"></Label>
-                                <TextView *ngIf="item.phone" row="5" col="1" [(ngModel)]="item.phone"></TextView>
-                                <StackLayout row="6" col="0" colspan="2" class="hr-light"></StackLayout>
-                            </GridLayout>
-                        </ng-template>
-                </RadListView>
+                        <GridLayout rows="auto,auto,auto" columns="*,*" *ngFor="let item of item.residencies" class="p-l-15 t-17">
+                            <Label row="0" col="0" text="Institution name:" class="c-black p-b-10 p-t-15"></Label>
+                            <TextView *ngIf="item.institution_name" row="0" col="1" [(ngModel)]="item.institution_name"></TextView>
+                            <Label row="1" col="0" text="Type:" class="c-black p-b-10 p-t-15"></Label>
+                            <TextView *ngIf="item.type" row="1" col="1" [(ngModel)]="item.type"></TextView>
+                            <StackLayout row="2" col="0" colspan="2" class="hr-light"></StackLayout>
+                        </GridLayout>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <GridLayout rows="auto,auto" columns="*,*" class="p-l-15 t-17">
+                            <Label row="0" col="0" text="Degree:" class="c-black p-b-10 p-t-15"></Label>
+                            <TextField row="0" col="1" id="txtfldDegree" [(ngModel)]="item.degree"></TextField>
+                        </GridLayout>
+                        
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label text="Contact Information" class="p-l-15 p-t-20 p-b-10 c-bg-lg text-muted text-uppercase" textWrap="true"></Label>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <GridLayout rows="auto,auto" columns="*,*" class="p-l-15 t-17">
+                            <Label row="0" col="0" text="Phone:" class="c-black p-b-10 p-t-15"></Label>
+                            <TextField row="0" col="1" id="txtfldPhone" [(ngModel)]="item.phone" textWrap="true"></TextField>
+                        </GridLayout>
+                        
+                        <StackLayout class="hr-light"></StackLayout>
+                        <Label text="Locations:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
+                        <GridLayout class="p-l-15 t-17" rows="auto,auto,auto,auto,auto,auto,auto" columns="*,*" *ngFor="let item of item.locations">
+                            <Label *ngIf="item.address_lines && item.address_lines.length" class="c-black p-b-10 p-t-15" row="0" col="0" text="Address Lines"></Label>
+                            <TextView *ngIf="item.address_lines[0]" row="0" col="1" [(ngModel)]="item.address_lines[0]"></TextView>
+                            <TextView *ngIf="item.address_lines[1]" row="1" col="1" [(ngModel)]="item.address_lines[1]"></TextView>
+                            <Label *ngIf="item.city" class="c-black p-b-10 p-t-15" row="2" col="0" text="City"></Label>
+                            <TextView *ngIf="item.city" row="2" col="1" [(ngModel)]="item.city"></TextView>
+                            <Label *ngIf="item.state" class="c-black p-b-10 p-t-15" row="3" col="0" text="State"></Label>
+                            <TextView *ngIf="item.state" row="3" col="1" [(ngModel)]="item.state"></TextView>
+                            <Label *ngIf="item.zipcode" class="c-black p-b-10 p-t-15" row="4" col="0" text="Zipcode"></Label>
+                            <TextView *ngIf="item.zipcode" row="4" col="1" [(ngModel)]="item.zipcode"></TextView>
+                            <Label *ngIf="item.phone" class="c-black p-b-10 p-t-15" row="5" col="0" text="Phone"></Label>
+                            <TextView *ngIf="item.phone" row="5" col="1" [(ngModel)]="item.phone"></TextView>
+                            <StackLayout row="6" col="0" colspan="2" class="hr-light"></StackLayout>
+                        </GridLayout>
                     </StackLayout>
                     
                     

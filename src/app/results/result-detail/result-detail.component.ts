@@ -34,6 +34,7 @@ export class ResultDetailComponent implements OnInit {
 	location: string;
 	phone: string;
 	degree: string;
+	user: any;
 
 	constructor(
 		private _modalService: ModalDialogService,
@@ -74,6 +75,9 @@ export class ResultDetailComponent implements OnInit {
 			this.phone =  this.item.phone;
 			this.isLoading = false;
 		});
+		Kinvey.User.me().then(user => {
+			this.user = user && user.data;
+		});
 		//this.location = this.formatLocations(this.newItem.locations);
 	}
 
@@ -94,6 +98,7 @@ export class ResultDetailComponent implements OnInit {
 
 	onSubmitButtonTap(): void {
 		if(this.isEditable){
+			this.item.useremail = this.user.email;
 			this._providerService.saveItem(this.item);
 			this._providerService.saveItem(this.originalItem);
 			this.education = this.formatEducation(this.originalItem.education);
