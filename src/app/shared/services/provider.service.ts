@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Kinvey } from "kinvey-nativescript-sdk";
 import { RapidHealthProviders } from "~/app/shared/models/rapidHealthProviders.model";
+import { RapidHealthProviderErrors } from "~/app/shared/models/rapidHealthProviderErrors.model";
 import { Provider } from "../../shared/models/provider.model";
 
 @Injectable()
@@ -9,6 +10,7 @@ export class ProviderService {
     dataStoreType = Kinvey.DataStoreType.Network;
     // tslint:disable-next-line:max-line-length
     private _rapidproviderStore = Kinvey.DataStore.collection<RapidHealthProviders>("RapidHealthProviders/Provider", this.dataStoreType);
+    private _rapidproviderErrorsStore = Kinvey.DataStore.collection<RapidHealthProviderErrors>("RapidHealthProviderErrors", this.dataStoreType);
 
     // tslint:disable-next-line:max-line-length
     findRapidHealthProviders(specialty: string, zipCode: string, latLong: string): Promise<Array<RapidHealthProviders>> {
@@ -43,6 +45,21 @@ export class ProviderService {
             });
 
         return rapidprovidersPromise;
+    }
+
+    saveItem(item : RapidHealthProviderErrors): RapidHealthProviderErrors {
+        
+
+        const rapidprovidersPromise = this._rapidproviderErrorsStore.save(item)
+        .then((function(item){
+            console.log(item);
+            return item;
+        }))
+        .catch(function(error){
+            console.log(error);
+        }
+        );
+      return item;
     }
 
 }

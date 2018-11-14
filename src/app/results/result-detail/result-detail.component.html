@@ -1,42 +1,121 @@
 <ActionBar class="action-bar" [title]="title">
-    <NavigationButton android.systemIcon="ic_menu_back" (tap)="onBackButtonTap()"></NavigationButton>
-</ActionBar>
-<GridLayout>
-    <ScrollView>
-        <GridLayout rows="*">
-            <StackLayout [visibility]="isLoading ? 'hidden' : 'visible'">
-                <StackLayout class="c-bg-lg p-10">
-                    <Image [visibility]="'collapsed'" width="80" height="80" class="m-15 m-x-auto img-circle-large" ></Image>
-                    <Label  width="80" height="80" class="fa c-cb alt-user-image text-center m-20" style="font-size: 50px;"  text="&#xf2be;"></Label>
-                    <Label [text]="title" class="c-black t-25 font-weight-bold text-center" textWrap="true"></Label>
-                    <Label *ngIf="item.residencies && item.residencies.length" [text]="item.residencies[0].institution_name" class="text-muted text-center" textWrap="true"></Label>
-                    <Label [text]="item.specialty_primary[0]" class="c-black text-center m-5" textWrap="true"></Label>
-                    <Button class="btn btn-margin btn-primary book-button platform-button" *ngIf="!btnRemove" text="Request an Appointment" (tap)="onBookButtonTap(item)"></Button>
-                    <Button class="btn btn-margin btn-primary cancel-button platform-button" *ngIf="btnRemove" text="Cancel this Appointment"
-                        (tap)="onCancelButtonTap(item)"></Button>
-                </StackLayout>
-                <GridLayout columns="*,3*" rows="auto,auto,auto,auto,auto,auto" class="p-l-15 t-17">
-                    <Label row="0" col="0" text="Education" class="c-black p-b-10 p-t-15"></Label>
-                    <Label *ngIf="item.education && item.education.length" row="0" col="1" [text]="formatEducation(item.education)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
-                    <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
-                    <Label row="2" col="0" text="Residencies:" class="c-black p-b-10 p-t-15"></Label>
-                    <Label *ngIf="item.residencies && item.residencies.length" row="2" col="1" [text]="formatResidencies(item.residencies)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
-                    <StackLayout row="3" colspan="2" class="hr-light"></StackLayout>
-                    <Label row="4" col="0" text="Degree:" class="c-black p-b-10 p-t-15"></Label>
-                    <Label row="4" col="1" [text]="item.degree" class="text-muted p-b-10 p-t-15"></Label>
-                    <StackLayout row="5" colspan="2" class="hr-light"></StackLayout>
-                </GridLayout>
-                <Label text="Contact Information" class="p-l-15 p-t-20 p-b-10 c-bg-lg text-muted text-uppercase" textWrap="true"></Label>
-                <StackLayout class="hr-light"></StackLayout>
-                <GridLayout columns="*,3*" rows="auto,auto,auto" class="p-l-15 t-17">
-                    <Label row="0" col="0" text="Phone:" class="c-black p-b-10 p-t-15"></Label>
-                    <Label row="0" col="1" [text]="item.phone" class="c-blue p-b-10 p-t-15" textWrap="true" (tap)="onPhoneTap(item)"></Label>
-                    <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
-                    <Label row="2" col="0" text="Locations:" class="c-black p-b-10 p-t-15"></Label>
-                    <Label row="2" col="1" [text]="formatLocations(item.locations)" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
+        <NavigationButton android.systemIcon="ic_menu_back" (tap)="onBackButtonTap()"></NavigationButton>
+    </ActionBar>
+    <GridLayout>
+        <ScrollView>
+            <GridLayout rows="*">
+                <StackLayout [visibility]="isLoading ? 'hidden' : 'visible'">
+                    <StackLayout class="c-bg-lg p-10">
+                        <Image [visibility]="'collapsed'" width="80" height="80" class="m-15 m-x-auto img-circle-large" ></Image>
+                        <Label  width="80" height="80" class="fa c-cb alt-user-image text-center m-20" style="font-size: 50px;"  text="&#xf2be;"></Label>
+                        <Label *ngIf="item.prefix" [text]="item.prefix + ' ' + item.first_name +  ' ' + item.last_name"  class="c-black t-25 font-weight-bold text-center" textWrap="true"></Label>
+                        <Label *ngIf="!item.prefix" [text]="item.first_name +  ' ' + item.last_name"  class="c-black t-25 font-weight-bold text-center" textWrap="true"></Label>
+                        <Label *ngIf="item.residencies && item.residencies.length" [text]="item.residencies[0].institution_name" class="text-muted text-center" textWrap="true"></Label>
+                        <Label [text]="item.specialty_primary[0]" class="c-black text-center m-5" textWrap="true"></Label>
+                        <Button class="btn btn-margin btn-primary book-button platform-button" *ngIf="!btnRemove" text="Request an Appointment" (tap)="onBookButtonTap(item)"></Button>
+                        <Button class="btn btn-margin btn-primary cancel-button platform-button" *ngIf="btnRemove" text="Cancel this Appointment"
+                            (tap)="onCancelButtonTap(item)"></Button>
+                    </StackLayout>
+                    <StackLayout *ngIf="!isEditable">
+                        <GridLayout columns="*,3*" rows="auto,auto,auto,auto,auto,auto" class="p-l-15 t-17">
+                            <Label row="0" col="0" text="Education" class="c-black p-b-10 p-t-15"></Label>
+                            <Label *ngIf="item.education" row="0" col="1" [text]="education" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
+                            
+                            <!-- <TextView *ngIf="isEditable" row="0" col="1" [(ngModel)]="education" style="margin-top: 15px" borderColor="#DEDEDE" borderWidth="1" height="200px" hint="Enter Note"  returnKeyType="send" class="input input-border"></TextView> -->
+                            <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+                            <Label row="2" col="0" text="Residencies:" class="c-black p-b-10 p-t-15"></Label>
+                            <Label *ngIf="item.residencies && item.residencies.length" row="2" col="1" [text]="residencies" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
+                            
+                            <!-- <TextView *ngIf="isEditable"  row="2" col="1" [(ngModel)]="residencies" style="margin-top: 15px" borderColor="#DEDEDE" borderWidth="1" height="200px" hint="Enter Note"  returnKeyType="send" class="input input-border"></TextView> -->
+                            <StackLayout row="3" colspan="2" class="hr-light"></StackLayout>
+                            <Label row="4" col="0" text="Degree:" class="c-black p-b-10 p-t-15"></Label>
+                            <Label row="4" col="1" [text]="degree" class="text-muted p-b-10 p-t-15"></Label>
+                            
+                            <StackLayout row="5" colspan="2" class="hr-light"></StackLayout>
+                        </GridLayout>
+                        <Label text="Contact Information" class="p-l-15 p-t-20 p-b-10 c-bg-lg text-muted text-uppercase" textWrap="true"></Label>
+                        <StackLayout class="hr-light"></StackLayout>
+                        <GridLayout columns="*,3*" rows="auto,auto,auto" class="p-l-15 t-17">
+                            <Label row="0" col="0" text="Phone:" class="c-black p-b-10 p-t-15"></Label>
+                            <Label row="0" col="1" [text]="phone" class="c-blue p-b-10 p-t-15" textWrap="true" (tap)="onPhoneTap(item)"></Label>
+                            
+                            <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+                            <Label row="2" col="0" text="Locations:" class="c-black p-b-10 p-t-15"></Label>
+                            <Label row="2" col="1" [text]="location" class="text-muted p-b-10 p-t-15" textWrap="true"></Label>
+                            
+                            <!-- <TextField *ngIf="isEditable" id="txtfldLocation" row="2" col="1" [(ngModel)]="location" class="text-muted p-b-10 p-t-15" textWrap="true"></TextField> -->
+                        </GridLayout>
+                    </StackLayout>
+
+                    <StackLayout *ngIf="isEditable">
+                        
+                        <GridLayout *ngIf="item.education" rows="auto,auto,auto" columns="*,*" class="p-l-15 t-17">
+                            <Label row="0" col="0" text="Education" class="c-black p-b-10 p-t-15"></Label>
+                            <TextView *ngIf="item.education.medical_school" row="0" col="1" [(ngModel)]="item.education.medical_school"></TextView>
+                            <TextView *ngIf="item.education.graduation_year" row="1" col="1" [(ngModel)]="item.education.graduation_year"></TextView>
+                        </GridLayout>
+                        <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+
+                        <Label text="Residencies:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
+                        <RadListView [items]="item.residencies" class="p-l-15 t-17">
+                            <ng-template tkListItemTemplate let-item="item">
+                                <GridLayout rows="auto,auto,auto" columns="*,*">
+                                    <Label row="0" col="0" text="Institution name:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
+                                    <TextView *ngIf="item.institution_name" row="0" col="1" [(ngModel)]="item.institution_name"></TextView>
+                                    <Label row="1" col="0" text="Type:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
+                                    <TextView *ngIf="item.type" row="1" col="1" [(ngModel)]="item.type"></TextView>
+                                    <StackLayout row="2" col="0" colspan="2" class="hr-light"></StackLayout>
+                                </GridLayout>
+                            </ng-template>
+                    </RadListView>
+                    <StackLayout class="hr-light"></StackLayout>
+                    <GridLayout rows="auto,auto" columns="*,*" class="p-l-15 t-17">
+                        <Label row="0" col="0" text="Degree:" class="c-black p-b-10 p-t-15"></Label>
+                        <TextField row="0" col="1" id="txtfldDegree" [(ngModel)]="item.degree"></TextField>
+                    </GridLayout>
+                    
+                    <StackLayout class="hr-light"></StackLayout>
+                    <Label text="Contact Information" class="p-l-15 p-t-20 p-b-10 c-bg-lg text-muted text-uppercase" textWrap="true"></Label>
+                    <StackLayout class="hr-light"></StackLayout>
+                    <GridLayout rows="auto,auto" columns="*,*" class="p-l-15 t-17">
+                        <Label row="0" col="0" text="Phone:" class="c-black p-b-10 p-t-15"></Label>
+                        <TextField row="0" col="1" id="txtfldPhone" [(ngModel)]="item.phone" textWrap="true"></TextField>
+                    </GridLayout>
+                    
+                    <StackLayout class="hr-light"></StackLayout>
+                    <Label text="Locations:" class="c-black p-b-10 p-t-15 p-l-15 t-17"></Label>
+                    <RadListView  class="p-l-15 t-17" [items]="item.locations">
+                        <ng-template tkListItemTemplate let-item="item">
+                            <GridLayout rows="auto,auto,auto,auto,auto,auto,auto" columns="*,*">
+                                <Label *ngIf="item.address_lines && item.address_lines.length" class="c-black p-b-10 p-t-15 p-l-15" row="0" col="0" text="Address Lines"></Label>
+                                <TextView *ngIf="item.address_lines[0]" row="0" col="1" [(ngModel)]="item.address_lines[0]"></TextView>
+                                <TextView *ngIf="item.address_lines[1]" row="1" col="1" [(ngModel)]="item.address_lines[1]"></TextView>
+                                <Label *ngIf="item.city" class="c-black p-b-10 p-t-15 p-l-15" row="2" col="0" text="City"></Label>
+                                <TextView *ngIf="item.city" row="2" col="1" [(ngModel)]="item.city"></TextView>
+                                <Label *ngIf="item.state" class="c-black p-b-10 p-t-15 p-l-15" row="3" col="0" text="State"></Label>
+                                <TextView *ngIf="item.state" row="3" col="1" [(ngModel)]="item.state"></TextView>
+                                <Label *ngIf="item.zipcode" class="c-black p-b-10 p-t-15 p-l-15" row="4" col="0" text="Zipcode"></Label>
+                                <TextView *ngIf="item.zipcode" row="4" col="1" [(ngModel)]="item.zipcode"></TextView>
+                                <Label *ngIf="item.phone" class="c-black p-b-10 p-t-15 p-l-15" row="5" col="0" text="Phone"></Label>
+                                <TextView *ngIf="item.phone" row="5" col="1" [(ngModel)]="item.phone"></TextView>
+                                <StackLayout row="6" col="0" colspan="2" class="hr-light"></StackLayout>
+                            </GridLayout>
+                        </ng-template>
+                </RadListView>
+                    </StackLayout>
+                    
+                    
+                    
+            <StackLayout class="p-t-10" row="1" verticalAlignment="bottom">
+                <Button *ngIf="!isEditable" text="Report an Error" class="find-button platform-button" (tap)="onUpdateButtonTap()"></Button>
+                <GridLayout *ngIf="isEditable" columns="*,*" rows="auto,auto" class="p-t-10">
+                    <Button *ngIf="isEditable" row="0" col="0" text="Submit" (tap)="onSubmitButtonTap()" style="margin-bottom: 5px;"></Button>
+                    <Button *ngIf="isEditable" row="0" col="1" text="Cancel" (tap)="onCancelButtonTapOn(item)" style="margin-bottom: 5px;"></Button>
                 </GridLayout>
             </StackLayout>
-        </GridLayout>
-    </ScrollView>
-    <ActivityIndicator class="activity-indicator" [busy]="isLoading"></ActivityIndicator>
-</GridLayout>
+                </StackLayout>
+            </GridLayout>
+        </ScrollView>
+        <ActivityIndicator class="activity-indicator" [busy]="isLoading"></ActivityIndicator>
+    </GridLayout>
+    
