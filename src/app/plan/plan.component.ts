@@ -32,8 +32,9 @@ export class PlanComponent {
         this.isLoading = true;
         Kinvey.User.me().then(user => {
             this.user = user && user.data;
-            const planId = (this.user && this.user.planId) || "33602TX0420001"; // TODO: remove this hardcoded value
-
+            
+            //const planId = (this.user && this.user.planId) || "33602TX0420001"; // TODO: remove this hardcoded value
+            const planId = (this.user && this.user.planId) || "71837TX0010004";
             return this._planService.getPlanById(planId);
         }).then(plan => {
             // Display a placeholder when no image is available

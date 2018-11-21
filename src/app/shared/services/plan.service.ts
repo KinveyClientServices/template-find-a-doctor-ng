@@ -6,7 +6,7 @@ import { Plan } from "../models/plan.model";
 export class PlanService {
     private _plans: Array<Plan>;
 
-    private _planStore = Kinvey.DataStore.collection<Plan>("Plans");
+    private _planStore = Kinvey.DataStore.collection<Plan>("RapidHealthPlans");
     private _plansPromise: Promise<any>;
 
     getPlanById(id: string): Promise<any> {
@@ -15,7 +15,7 @@ export class PlanService {
         return this._planStore.find(query).toPromise()
             .then(data => {
                 return <Plan>data[0];
-            })
+            }, (err) => { console.log(err); })
             .catch((error: Kinvey.BaseError) => {
                 alert({
                     title: "Oops something went wrong.",
