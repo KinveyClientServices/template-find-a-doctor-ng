@@ -1,6 +1,6 @@
 <ScrollView>
     <GridLayout rows="*" columns="*">
-        <StackLayout [visibility]="isLoading ? 'hidden' : 'visible'">
+        <StackLayout (loaded)="onLoaded(event)">
             <StackLayout class="c-bg-lg">
                 <Image [visibility]="noImage ? 'collapsed' : 'visible'" width="80" height="80" class="p-10 m-x-auto img-circle-large" [src]="item.profile_image"></Image>
                 <Label class="fa c-cb alt-user-image text-center m-20" text="&#xf2be;"></Label>
@@ -39,13 +39,13 @@
             <StackLayout class="hr-light"></StackLayout>
             <GridLayout columns="*,*" rows="auto,auto,auto,auto,auto,auto">
                 <Label row="0" col="0" text="Monthly cost:" class="itemLabel m-l-15 t-19 p-t-10"></Label>
-                <Label row="0" col="1" [text]="formatCurrency(item.premiums && item.premiums[0] && item.premiums[0].cost)" class="c-cb label-right"></Label>
+                <Label row="0" col="1" [text]="getTotalCost()" class="c-cb label-right"></Label>
                 <StackLayout row="1" colspan="2" class="hr-light m-t-10"></StackLayout>
                 <Label row="2" col="0" text="Adults:" class="itemLabel m-l-15 t-19 p-t-10"></Label>
-                <Label row="2" col="1" [text]="item.premiums && item.premiums[0] && item.premiums[0].adults" class="c-cb label-right"></Label>
+                <Label row="2" col="1" [text]="getTotalAdults()" class="c-cb label-right"></Label>
                 <StackLayout row="3" colspan="2" class="hr-light m-t-10"></StackLayout>
                 <Label row="4" col="0" text="Children:" class="itemLabel m-l-15 t-19 p-t-10"></Label>
-                <Label row="4" col="1" [text]="item.premiums && item.premiums[0] && item.premiums[0].children" class="c-cb label-right"></Label>
+                <Label row="4" col="1" [text]="getTotalChildren()" class="c-cb label-right"></Label>
                 <StackLayout row="5" colspan="2" class="hr-light m-t-10"></StackLayout>
             </GridLayout>
             <StackLayout class="c-bg-lg">

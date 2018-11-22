@@ -17,6 +17,7 @@ export class PlanComponent {
     user: any;
     isLoading: boolean;
     noImage: boolean;
+    plan: object;
     private formatter: Intl.NumberFormat;
 
     constructor(
@@ -30,16 +31,20 @@ export class PlanComponent {
         this.item = new Plan({});
         this.user = {};
         this.isLoading = true;
+        
         Kinvey.User.me().then(user => {
             this.user = user && user.data;
             
             //const planId = (this.user && this.user.planId) || "33602TX0420001"; // TODO: remove this hardcoded value
-            const planId = (this.user && this.user.planId) || "71837TX0010004";
+            const planId = this.user && this.user.planId;
             return this._planService.getPlanById(planId);
         }).then(plan => {
             // Display a placeholder when no image is available
-            this.noImage = !plan.profile_image;
-            this.item = plan;
+            if(plan) {
+                this.noImage = !plan.profile_image;
+                this.item = plan;
+                this.plan = plan;
+            } 
             this.isLoading = false;
         }, error => {
             alert({
@@ -50,6 +55,18 @@ export class PlanComponent {
         });
     }
 
+    onLoaded(event) {
+        if(this.plan) {
+
+        } else {
+            alert({
+                title: "No plan registered",
+                message: "You don't have any active plan registered with us.",
+                okButtonText: "Ok"
+            });
+        }
+    }
+
     onBackButtonTap(): void {
         this._routerExtensions.backToPreviousPage();
     }
@@ -57,6 +74,7 @@ export class PlanComponent {
     getUserName(user: any):string {
         return user && user.givenName && user.familyName ? user.givenName + " " + user.familyName : "";
     }
+
     formatCurrency(value: number): string {
         if (isNaN(value)) {
             value = 0;
@@ -89,5 +107,38 @@ export class PlanComponent {
                 okButtonText: "Ok"
             });
         });
+    }
+
+    getTotalCost(): string {
+        var cost: number;
+        cost = 0;
+        if(this.item && this.item.premiums && this.item.premiums.length) {
+            for(var i = 0; i < this.item.premiums.length; i++) {
+                cost += this.item.premiums[i].cost;
+            }
+        }
+        return this.formatter.format(cost);
+    }
+
+    getTotalAdults(): number {
+        var adults: number;
+        adults = 0;
+        if(this.item && this.item.premiums && this.item.premiums.length) {
+            for(var i = 0; i < this.item.premiums.length; i++) {
+                adults += this.item.premiums[i].adults;
+            }
+        }
+        return adults;
+    }
+
+    getTotalChildren(): number {
+        var children: number;
+        children = 0;
+        if(this.item && this.item.premiums && this.item.premiums.length) {
+            for(var i = 0; i < this.item.premiums.length; i++) {
+                children += this.item.premiums[i].children;
+            }
+        }
+        return children;
     }
 }
