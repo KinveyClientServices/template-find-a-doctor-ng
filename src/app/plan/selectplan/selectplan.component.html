@@ -1,0 +1,27 @@
+<GridLayout rows="auto,*"  class="c-bg-white">
+            
+      
+        <RadListView #planListView [groupingFunction]="planGroupingFunc" row="1" [filteringFunction]="planFilteringFunc"
+            [items]="plans" selectionBehavior="Press" (itemSelected)="planSelected($event)" [itemTemplateSelector]="planListViewTemplateSelector">
+            <ng-template tkListItemTemplate let-item="item">
+                <GridLayout class="c-bg-white p-t-10 p-l-15" columns="*,auto" rows="*,auto">
+                    <Label [text]="item.plan_name" class="itemLabel t-18 p-b-10"></Label>
+                    <Label col="1" text="&#xf00c;" [visibility]="item.selected ? 'visible':'hidden'" class="fa pink-accent t-19 text-right p-r-20 p-b-10"></Label>
+                    <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+                </GridLayout>
+            </ng-template>
+
+            <ng-template tkTemplateKey="last" let-item="item">
+                <GridLayout class="c-bg-white p-t-10 p-l-15" columns="*,auto" rows="*,auto, 60">
+                    <Label [text]="item.plan_name" class="itemLabel t-18 p-b-10"></Label>
+                    <Label col="1" text="&#xf00c;" [visibility]="item.selected ? 'visible':'hidden'" class="fa pink-accent t-19 text-right p-r-20 p-b-10"></Label>
+                    <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+                </GridLayout>
+            </ng-template>
+            
+            <ng-template tkGroupTemplate let-category="category">
+                <Label [text]="category" height="50" backgroundColor="white" paddingLeft="15"></Label>
+            </ng-template>
+        </RadListView>
+        <ActivityIndicator rowSpan="2" class="activity-indicator" [busy]="isplanLoading"></ActivityIndicator>
+    </GridLayout>

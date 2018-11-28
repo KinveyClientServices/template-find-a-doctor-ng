@@ -4,6 +4,8 @@ import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
 import { LoggedInLazyLoadGuard } from "./logged-in-lazy-load.guard";
 import "rxjs/add/operator/switchMap";
+import { ModalDialogService } from "nativescript-angular/modal-dialog";
+import { ModalComponent } from "./plan/selectplan/selectplan.component";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -21,7 +23,9 @@ import "rxjs/add/operator/switchMap";
     ],
     declarations: [
         AppComponent,
+        ModalComponent
     ],
+    entryComponents: [ModalComponent],
     providers: [
         LoggedInLazyLoadGuard
     ],

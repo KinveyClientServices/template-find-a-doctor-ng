@@ -4,6 +4,9 @@ import { Kinvey } from "kinvey-nativescript-sdk";
 import { Plan } from "../shared/models/plan.model";
 import { PlanService } from "../shared/services/plan.service";
 import { openUrl } from "tns-core-modules/utils/utils";
+import * as dialogs from "tns-core-modules/ui/dialogs";
+import { ModalDialogService } from "nativescript-angular/directives/dialogs";
+import { ModalComponent } from "./selectplan/selectplan.component";
 
 @Component({
     selector: "PlanComponent",
@@ -19,24 +22,39 @@ export class PlanComponent {
     noImage: boolean;
     plan: object;
     private formatter: Intl.NumberFormat;
+    isPlan: boolean;
+    items: any;
+    plans: any;
+    userData: any;
+    public prompt: string;
 
     constructor(
         private _planService: PlanService,
-        private _routerExtensions: RouterExtensions
-    ) { }
+        private _routerExtensions: RouterExtensions,
+        private modal: ModalDialogService, 
+        private vcRef: ViewContainerRef
+    ) {  }
+
+    
 
     ngOnInit(): void {
         this.formatter = new Intl.NumberFormat("en-US", { style: 'currency', currency: 'USD' });
         // this.title = "Plan Information";
         this.item = new Plan({});
+        
         this.user = {};
         this.isLoading = true;
+        this.isPlan = false;
+        
         
         Kinvey.User.me().then(user => {
             this.user = user && user.data;
-            
+            this.userData = user.data;
             //const planId = (this.user && this.user.planId) || "33602TX0420001"; // TODO: remove this hardcoded value
             const planId = this.user && this.user.planId;
+            this._planService.getPlansByState(this.userData.state).then(plans => {
+                this.plans = plans;
+            });
             return this._planService.getPlanById(planId);
         }).then(plan => {
             // Display a placeholder when no image is available
@@ -55,14 +73,18 @@ export class PlanComponent {
         });
     }
 
+
     onLoaded(event) {
         if(this.plan) {
-
+           
         } else {
-            alert({
-                title: "No plan registered",
-                message: "You don't have any active plan registered with us.",
-                okButtonText: "Ok"
+            let options = {
+                context: {plans: this.plans},
+                fullscreen: true,
+                viewContainerRef: this.vcRef
+            };
+            this.modal.showModal(ModalComponent, options).then(res => {
+                console.log(res);
             });
         }
     }

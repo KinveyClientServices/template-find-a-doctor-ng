@@ -105,7 +105,7 @@ export class ResultDetailComponent implements OnInit {
 			this.residencies = this.formatResidencies(this.originalItem.residencies);
 			this.location = this.formatLocations(this.originalItem.locations);
 			this.isEditable = false;
-			alert("Your response has been submitted successfuly.");
+			alert("Your response has been submitted successfully.");
 		}
 	}
 	

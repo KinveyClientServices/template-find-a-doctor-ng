@@ -7,6 +7,7 @@ export class RegistrationForm {
     gender: string;
     dateOfBirth: string;
     planId: string;
+    state: string;
 
     constructor() {
         this.email = "";
@@ -17,5 +18,6 @@ export class RegistrationForm {
         this.gender = "male";
         this.dateOfBirth = null;
         this.planId = "";
+        this.state = "";
     }
 }
