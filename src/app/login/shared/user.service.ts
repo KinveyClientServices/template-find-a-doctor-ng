@@ -22,4 +22,10 @@ export class UserService {
             state: registrationForm.state
         });
     }
+
+    static update(userInfo: RegistrationForm): Promise<any> {
+        return Kinvey.User.update({
+            planId: userInfo.planId
+        });
+    }
 }

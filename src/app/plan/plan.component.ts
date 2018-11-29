@@ -52,9 +52,7 @@ export class PlanComponent {
             this.userData = user.data;
             //const planId = (this.user && this.user.planId) || "33602TX0420001"; // TODO: remove this hardcoded value
             const planId = this.user && this.user.planId;
-            this._planService.getPlansByState(this.userData.state).then(plans => {
-                this.plans = plans;
-            });
+            
             return this._planService.getPlanById(planId);
         }).then(plan => {
             // Display a placeholder when no image is available
@@ -78,14 +76,17 @@ export class PlanComponent {
         if(this.plan) {
            
         } else {
-            let options = {
-                context: {plans: this.plans},
-                fullscreen: true,
-                viewContainerRef: this.vcRef
-            };
-            this.modal.showModal(ModalComponent, options).then(res => {
-                console.log(res);
+            this._planService.getPlansByState(this.userData.state).then(plans => {
+                this.plans = plans;
+                let options = {
+                    context: {plans: this.plans, user:this.userData},
+                    viewContainerRef: this.vcRef
+                };
+                this.modal.showModal(ModalComponent, options).then(res => {
+                    console.log(res);
+                });
             });
+            
         }
     }
 

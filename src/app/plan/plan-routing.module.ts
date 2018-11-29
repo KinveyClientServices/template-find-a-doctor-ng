@@ -6,6 +6,7 @@ import { PlanComponent } from "./plan.component";
 
 const routes: Routes = [
     { path: "", component: PlanComponent },
+    { path: "plan", component: PlanComponent },
 ];
 
 @NgModule({
