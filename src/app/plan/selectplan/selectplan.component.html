@@ -1,7 +1,7 @@
 <StackLayout margin="24" horizontalAlignment="center" verticalAlignment="center">
     <GridLayout rows="auto,auto" columns="*,*">
         <Label row="0" col="1" text="X" style="text-align: right; color: red;font-size: 18px;" (tap)="onCancelButtonTap()"></Label>
-        <Label row="1" col="0" colspan="2" text="You don't have an active plan selected. Please select a plan from the below list.." textwrap="true"></Label>
+        <Label row="1" col="0" colspan="2" class="itemLabel t-18 p-b-10" text="You don't have an active plan selected. Please select a plan from the below list.." textwrap="true"></Label>
     </GridLayout>
 
 <StackLayout class="p-t-10" verticalAlignment="bottom">
@@ -41,11 +41,7 @@
                 <Label [text]="category" height="50" backgroundColor="white" paddingLeft="15"></Label>
             </ng-template>
         </RadListView>
-        <ActivityIndicator rowSpan="2" class="activity-indicator" [busy]="isplanLoading"></ActivityIndicator>
+        <ActivityIndicator class="activity-indicator" [busy]="isplanLoading"></ActivityIndicator>
     </GridLayout> 
-    
-
-        
-    <ActivityIndicator rowSpan="2" class="activity-indicator" [busy]="isplanLoading"></ActivityIndicator>
     
 </StackLayout>

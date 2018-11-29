@@ -33,7 +33,7 @@ export class ModalComponent {
     @ViewChild("planFilterSearchBar") planFilterSearchBar: any;
 
     ngOnInit(): void {
-		//this.isplanLoading = true;
+		this.isplanLoading = true;
         const filterFunc = (item: Plan): boolean => {
             return item.plan_name.toLowerCase().includes(this.filterPlans.toLowerCase());
             
@@ -44,9 +44,7 @@ export class ModalComponent {
 			return items.length === index + 1 ? "last" : "default";
         };
         this.plans = this.parameters.context.plans;
-        this.plans.forEach(plan=>{console.log(plan.plan_name);});
-        console.log(this.plans.length);
-        //this.isplanLoading = false;
+        this.isplanLoading = false;
     }
 
     public constructor(private params: ModalDialogParams, 

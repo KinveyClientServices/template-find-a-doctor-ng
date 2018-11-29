@@ -73,21 +73,24 @@ export class PlanComponent {
 
 
     onLoaded(event) {
-        if(this.plan) {
-           
-        } else {
-            this._planService.getPlansByState(this.userData.state).then(plans => {
-                this.plans = plans;
-                let options = {
-                    context: {plans: this.plans, user:this.userData},
-                    viewContainerRef: this.vcRef
-                };
-                this.modal.showModal(ModalComponent, options).then(res => {
-                    console.log(res);
+        if(this.userData) {
+            if(this.plan === undefined && this.userData.state !== undefined) {
+                this._planService.getPlansByState(this.userData.state).then(plans => {
+                    this.plans = plans;
+                    let options = {
+                        context: {plans: this.plans, user:this.userData},
+                        viewContainerRef: this.vcRef
+                    };
+                    this.modal.showModal(ModalComponent, options).then(res => {
+                        console.log(res);
+                    });
                 });
-            });
-            
+            } else {
+                
+                
+            }
         }
+       
     }
 
     onBackButtonTap(): void {
