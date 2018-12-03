@@ -51,7 +51,7 @@
                     <StackLayout row="5" colspan="2" class="hr-light m-t-10"></StackLayout>
                 </GridLayout>
                 <StackLayout class="c-bg-lg">
-                    <Label text="Benefits Summary" class="benefits-button c-bg-lg" (tap)="onBenefitsTap(item.benefits_summary_url)"></Label>
+                    <Label *ngIf="item.benefits_summary_url" text="Benefits Summary" class="benefits-button c-bg-lg" (tap)="onBenefitsTap(item.benefits_summary_url)"></Label>
                 </StackLayout>
             
             

@@ -24,11 +24,7 @@ export class EstimateService {
 				}
 			})
 			.catch((error) => {
-				alert({
-					title: "Oops something went wrong.",
-					message: error.debug,
-					okButtonText: "Ok"
-				});
+				alert("OOPS! Something went wrong or No Data Found");
 			});
 	}
 }
