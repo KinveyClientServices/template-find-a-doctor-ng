@@ -73,8 +73,10 @@ export class PlanComponent {
 
 
     onLoaded(event) {
+        
         if(this.userData) {
             if(this.plan === undefined && this.userData.state !== undefined) {
+                this.isLoading = true;
                 this._planService.getPlansByState(this.userData.state).then(plans => {
                     this.plans = plans;
                     let options = {
@@ -83,6 +85,7 @@ export class PlanComponent {
                     };
                     this.modal.showModal(ModalComponent, options).then(res => {
                         console.log(res);
+                        this.isLoading = false;
                     });
                 });
             } else {

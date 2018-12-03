@@ -1,16 +1,11 @@
-<StackLayout margin="24" horizontalAlignment="center" verticalAlignment="center">
-    <GridLayout rows="auto,auto" columns="*,*">
-        <Label row="0" col="1" text="X" style="text-align: right; color: red;font-size: 18px;" (tap)="onCancelButtonTap()"></Label>
-        <Label row="1" col="0" colspan="2" class="itemLabel t-18 p-b-10" text="You don't have an active plan selected. Please select a plan from the below list.." textwrap="true"></Label>
-    </GridLayout>
-
-<StackLayout class="p-t-10" verticalAlignment="bottom">
-        <Button text="Save" class="find-button platform-button p-b-10" (tap)="onSaveButtonTap()"></Button>
-        <Button text="Cancel" class="find-button platform-button" (tap)="onCancelButtonTap()" style="background-color: lightgray;"></Button>
-        <StackLayout class="hr-light" class="p-t-10 p-b-10"></StackLayout>
-    </StackLayout>
-<GridLayout rows="auto,*"  class="c-bg-white">
-            
+<GridLayout>
+    <StackLayout margin="24" horizontalAlignment="center" verticalAlignment="center">
+        <GridLayout rows="auto,auto" columns="*,*">
+            <Label row="0" col="1" text="X" style="text-align: right; color: red;font-size: 18px;" (tap)="onCancelButtonTap()"></Label>
+            <Label row="1" col="0" colspan="2" class="itemLabel t-18 p-b-10" text="You don't have an active plan selected. Please select a plan from the below list.." textwrap="true"></Label>
+        </GridLayout>
+    <GridLayout rows="auto,*"  class="c-bg-white">
+                
         <SearchBar #planFilterSearchBar 
             hint="Filter..." 
             (loaded)="planSearchBarLoaded($event)" 
@@ -43,5 +38,9 @@
         </RadListView>
         <ActivityIndicator class="activity-indicator" [busy]="isplanLoading"></ActivityIndicator>
     </GridLayout> 
-    
-</StackLayout>
+    </StackLayout>
+    <GridLayout rows="auto" columns="*,*" verticalAlignment="bottom" class="p-b-5">
+        <Button row="0" col="0" text="Save" class="find-button platform-button" (tap)="onSaveButtonTap()"></Button>
+        <Button row="0" col="1" text="Cancel" class="find-button platform-button" (tap)="onCancelButtonTap()" style="background-color: gray;"></Button>
+    </GridLayout>
+</GridLayout>
