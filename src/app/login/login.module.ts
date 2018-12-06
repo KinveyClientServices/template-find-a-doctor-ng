@@ -6,13 +6,15 @@ import { SharedModule } from "../shared/shared.module";
 import { LoginRoutingModule } from "./login-routing.module";
 import { LoginComponent } from "./login.component";
 import { RegistrationComponent } from "./registration/registration.component";
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     imports: [
         LoginRoutingModule,
         NativeScriptCommonModule,
         NativeScriptUIDataFormModule,
-        SharedModule
+        SharedModule,
+        HttpClientModule
     ],
     declarations: [
         LoginComponent,

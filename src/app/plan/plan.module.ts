@@ -3,6 +3,7 @@ import { NativeScriptCommonModule } from "nativescript-angular/common";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
 import { SharedModule } from "../shared/shared.module";
+import { DropDownModule } from "nativescript-drop-down/angular";
 
 import { PlanRoutingModule } from "./plan-routing.module";
 
@@ -12,7 +13,8 @@ import { PlanRoutingModule } from "./plan-routing.module";
         NativeScriptUIListViewModule,
         NativeScriptFormsModule,
         PlanRoutingModule,
-        SharedModule
+        SharedModule,
+        DropDownModule
     ],
     providers: [
     ],

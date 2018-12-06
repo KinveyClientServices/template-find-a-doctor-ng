@@ -1,12 +1,64 @@
-<ScrollView>
+<GridLayout>
     <GridLayout rows="*" columns="*">
-        <StackLayout (loaded)="onLoaded(event)">
+        <StackLayout *ngIf="!isPlan">
+                <StackLayout margin="24" horizontalAlignment="center" verticalAlignment="center">
+                        <GridLayout rows="auto,auto" columns="*,*">
+                            <Label row="0" col="0" colspan="2" class="itemLabel t-18 p-b-10" [text]="addEditPlanText" textwrap="true"></Label>
+                        </GridLayout>
+                        <DropDown #dd
+                  backroundColor="red"
+                  [items]="stateIt"
+                  hint="Select State";
+                  (selectedIndexChanged)="onchange($event)"
+                  style="font-weight: bold; font-size: 18px; padding-left: 30px;"
+                  row="0"
+                  colSpan="2"></DropDown>
+                        
+                    <GridLayout rows="auto,*"  class="c-bg-white">
+                        <SearchBar #planFilterSearchBar 
+                            hint="Filter..." 
+                            (loaded)="planSearchBarLoaded($event)" 
+                            [visibility]="!isplanLoading && (plans && plans.length) ? 'visible' : 'hidden'"
+                            [text]="filterPlans" 
+                            (textChange)="onTextChanged($event)" 
+                            (submit)="onplanFilterSubmit($event)" 
+                            class="c-bg-lg"></SearchBar>
+                        <RadListView #planListView [groupingFunction]="planGroupingFunc" row="1" [filteringFunction]="planFilteringFunc"
+                            [items]="plans" selectionBehavior="Press" (itemSelected)="planSelected($event)" [itemTemplateSelector]="planListViewTemplateSelector">
+                            <ng-template tkListItemTemplate let-item="item">
+                                <GridLayout class="c-bg-white p-t-10 p-l-15" columns="*,auto" rows="*,auto">
+                                    <Label [text]="capitalize(item.plan_name)" class="itemLabel t-18 p-b-10" textwrap="true"></Label>
+                                    <Label col="1" text="&#xf00c;" [visibility]="item.selected ? 'visible':'hidden'" class="fa pink-accent t-19 text-right p-r-20 p-b-10"></Label>
+                                    <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+                                </GridLayout>
+                            </ng-template>
+                
+                            <ng-template tkTemplateKey="last" let-item="item">
+                                <GridLayout class="c-bg-white p-t-10 p-l-15" columns="*,auto" rows="*,auto, 60">
+                                    <Label [text]="capitalize(item.plan_name)" class="itemLabel t-18 p-b-10" textwrap="true"></Label>
+                                    <Label col="1" text="&#xf00c;" [visibility]="item.selected ? 'visible':'hidden'" class="fa pink-accent t-19 text-right p-r-20 p-b-10"></Label>
+                                    <StackLayout row="1" colspan="2" class="hr-light"></StackLayout>
+                                </GridLayout>
+                            </ng-template>
+                            
+                            <ng-template tkGroupTemplate let-category="category">
+                                <Label [text]="category" height="50" backgroundColor="white" paddingLeft="15"></Label>
+                            </ng-template>
+                        </RadListView>
+                        <ActivityIndicator class="activity-indicator" [busy]="isplanLoading"></ActivityIndicator>
+                    </GridLayout> 
+                    </StackLayout>
+                    
+        </StackLayout>
+    <ScrollView>
+        <StackLayout (loaded)="onLoaded(event)" *ngIf="isPlan">
             <StackLayout class="c-bg-lg">
                 <Image *ngIf="noImage" [visibility]="noImage ? 'collapsed' : 'visible'" width="80" height="80" class="p-10 m-x-auto img-circle-large" [src]="item.profile_image"></Image>
                 <Label class="fa c-cb alt-user-image text-center m-20" text="&#xf2be;"></Label>
                 <Label [text]="getUserName(user)" class="font-weight-bold c-black t-25" text="" textAlignment="center" textWrap="true"></Label>
                 <Label *ngIf="item.plan_name" [text]="item.plan_name" class="c-black t-19 p-t-20" textAlignment="center" textWrap="true"></Label>
                 <Label text=" "></Label>
+                <Label text="Edit Plan" class="p-b-10 p-r-20" style="text-align: right; color: blue;" (tap)="editPlanTap()"></Label>
             </StackLayout>
             
                 <GridLayout columns="*,*" rows="auto,auto,auto,auto">
@@ -59,7 +111,15 @@
                 <Label text="Log Out" class="m-l-15 t-19 p-t-10 p-b-10 pink-accent" (tap)="onSignOutButtonTap()"></Label>
             </StackLayout>
         </StackLayout>
-        
+    </ScrollView>
         <ActivityIndicator class="activity-indicator" [busy]="isLoading"></ActivityIndicator>
+        <StackLayout *ngIf="!isPlan && !isEditPlan" verticalAlignment="bottom" class="p-b-5">
+            <Button [class.active]="!!planName" [isEnabled]="!!planName" text="Save" class="submit-button platform-button" (tap)="onSaveButtonTap()"></Button>
+        </StackLayout>
+        <GridLayout *ngIf="!isPlan && isEditPlan" rows="auto" columns="*,*" verticalAlignment="bottom" class="p-b-5">
+            <Button [class.active]="!!planName" [isEnabled]="!!planName" row="0" col="0" text="Save" class="submit-button platform-button" (tap)="onSaveButtonTap()"></Button>
+            <Button row="0" col="1" text="Cancel" class="find-button platform-button" (tap)="onCancelButtonTap()" style="background-color: gray;"></Button>
+        </GridLayout>
     </GridLayout>
-</ScrollView>
+    
+</GridLayout>

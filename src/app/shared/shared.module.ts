@@ -6,6 +6,7 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { AppointmentService } from "./services/appointment.service";
 import { ProviderService } from "./services/provider.service";
 import { PlanService } from "./services/plan.service";
+import { StatesService } from "./services/states.service";
 
 import { SearchComponent } from "../search/search.component";
 import { PlanComponent } from "../plan/plan.component";
@@ -25,7 +26,8 @@ import { CalculatorComponent } from "../calculator/calculator.component";
     providers: [
         AppointmentService,
         ProviderService,
-        PlanService
+        PlanService,
+        StatesService
     ],
     exports: [
         NativeScriptUIListViewModule,

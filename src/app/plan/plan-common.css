@@ -9,3 +9,12 @@
 .alt-user-image {
     font-size: 80;
 }
+
+.submit-button.active {
+    background-color: #F03B59;
+}
+
+.submit-button {
+    background-color: #C7C7CC;
+    margin: 10 0;
+}
