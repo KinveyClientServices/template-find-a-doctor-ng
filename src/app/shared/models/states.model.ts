@@ -9,13 +9,3 @@ export class States implements Entity{
         this.name = "";
     }
 }
-
-export class StateKeyLabel{
-    public value : string;
-    public display: string;
-
-    constructor () {
-        this.value = "";
-        this.display = "";
-    }
-}

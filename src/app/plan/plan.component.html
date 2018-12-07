@@ -6,13 +6,13 @@
                             <Label row="0" col="0" colspan="2" class="itemLabel t-18 p-b-10" [text]="addEditPlanText" textwrap="true"></Label>
                         </GridLayout>
                         <DropDown #dd
-                  backroundColor="red"
-                  [items]="stateIt"
-                  hint="Select State";
-                  (selectedIndexChanged)="onchange($event)"
-                  style="font-weight: bold; font-size: 18px; padding-left: 30px;"
-                  row="0"
-                  colSpan="2"></DropDown>
+                        class="state-dropdown"
+                        backroundColor="red"
+                        [items]="items"
+                        hint="Select State"
+                        (selectedIndexChanged)="onchange($event)"
+                        row="0"
+                        colSpan="2"></DropDown>
                         
                     <GridLayout rows="auto,*"  class="c-bg-white">
                         <SearchBar #planFilterSearchBar 
@@ -50,15 +50,15 @@
                     </StackLayout>
                     
         </StackLayout>
-    <ScrollView>
-        <StackLayout (loaded)="onLoaded(event)" *ngIf="isPlan">
+    <ScrollView *ngIf="isPlan">
+        <StackLayout (loaded)="onLoaded(event)">
             <StackLayout class="c-bg-lg">
                 <Image *ngIf="noImage" [visibility]="noImage ? 'collapsed' : 'visible'" width="80" height="80" class="p-10 m-x-auto img-circle-large" [src]="item.profile_image"></Image>
                 <Label class="fa c-cb alt-user-image text-center m-20" text="&#xf2be;"></Label>
                 <Label [text]="getUserName(user)" class="font-weight-bold c-black t-25" text="" textAlignment="center" textWrap="true"></Label>
                 <Label *ngIf="item.plan_name" [text]="item.plan_name" class="c-black t-19 p-t-20" textAlignment="center" textWrap="true"></Label>
                 <Label text=" "></Label>
-                <Label text="Edit Plan" class="p-b-10 p-r-20" style="text-align: right; color: blue;" (tap)="editPlanTap()"></Label>
+                <Label text="Edit Plan" class="p-b-10 p-r-20" class="editPlan" (tap)="editPlanTap()"></Label>
             </StackLayout>
             
                 <GridLayout columns="*,*" rows="auto,auto,auto,auto">
@@ -118,7 +118,7 @@
         </StackLayout>
         <GridLayout *ngIf="!isPlan && isEditPlan" rows="auto" columns="*,*" verticalAlignment="bottom" class="p-b-5">
             <Button [class.active]="!!planName" [isEnabled]="!!planName" row="0" col="0" text="Save" class="submit-button platform-button" (tap)="onSaveButtonTap()"></Button>
-            <Button row="0" col="1" text="Cancel" class="find-button platform-button" (tap)="onCancelButtonTap()" style="background-color: gray;"></Button>
+            <Button row="0" col="1" text="Cancel" class="find-button platform-button cancel-button" (tap)="onCancelButtonTap()"></Button>
         </GridLayout>
     </GridLayout>
     

@@ -21,9 +21,9 @@ export class UserService {
         });
     }
 
-    static update(userInfo: RegistrationForm): Promise<any> {
+    static update(userInfo): Promise<any> {
         return Kinvey.User.update({
-            //planId: userInfo.planId
+            planId: userInfo.planId
         });
     }
 }

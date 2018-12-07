@@ -11,9 +11,9 @@ import { isAndroid } from "tns-core-modules/platform";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
 import { ListViewEventData } from "nativescript-ui-listview";
 import { UserService } from "../login/shared/user.service";
-import { States, StateKeyLabel } from "../shared/models/states.model";
+import { States } from "../shared/models/states.model";
 import { StatesService } from "../shared/services/states.service";
-import { SelectedIndexChangedEventData, DropDown } from "nativescript-drop-down";
+import { ValueList } from "nativescript-drop-down";
 
 @Component({
     selector: "PlanComponent",
@@ -103,26 +103,21 @@ export class PlanComponent {
 		this.planListViewTemplateSelector = (item: Plan, index: number, items: any) => {
 			return items.length === index + 1 ? "last" : "default";
         };
-       
-        this.stateIt = this.stateItems();
-    }
 
-    public stateItems(): Array<any> {
-        let stateLblArra = new Array<any>();
-        let stateLbl;
+        this.items = new ValueList<string>();
         this._statesService.getUSSStates().then((states)=>{
             if(states && states.length){
-                this.states = states;
-                this.states.forEach((state)=> {
-                    //stateLbl.value = state._id;
-                    //stateLbl.display = state.name;
-                    stateLblArra.push(state._id);
-                } )
-                return stateLblArra;
+                for (let loop = 0; loop < states.length; loop++) {
+                    this.items.push({
+                        value: states[loop]._id,
+                        display: states[loop].name,
+                    });
+                }
             }
         });
-        return stateLblArra;
+       
     }
+
 
     get statesForm(): States {
         return this._stateForm;
@@ -281,6 +276,7 @@ export class PlanComponent {
     }
 
     onSaveButtonTap() {
+        this.isLoading = true;
         UserService.update(this.user).then((user)=>{
             alert({
                 title: "",
@@ -295,6 +291,7 @@ export class PlanComponent {
             if (plan) {
                 this.item = plan;
             } 
+            this.isLoading = false;
             
         }).catch((error)=>{
             alert("Could not  get active plan" + error);
@@ -322,7 +319,7 @@ export class PlanComponent {
 
     public onchange(args) {
         console.log(`Drop Down selected index changed from ${args.oldIndex} to ${args.newIndex}`);
-        let state = this.stateIt[args.newIndex];
+        let state = this.items._array[args.newIndex].value;
         this.getPlans(state);
     }
 
