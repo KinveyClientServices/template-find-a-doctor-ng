@@ -99,10 +99,10 @@
                     
                     
             <StackLayout class="p-t-10" row="1" verticalAlignment="bottom">
-                <Button *ngIf="!isEditable" text="Report an Error" class="find-button platform-button" (tap)="onUpdateButtonTap()" style="margin-bottom: 5px;"></Button>
+                <Button *ngIf="!isEditable" text="Report an Error" class="find-button platform-button" (tap)="onUpdateButtonTap()"></Button>
                 <GridLayout *ngIf="isEditable" columns="*,*" rows="auto,auto" class="p-t-10">
-                    <Button *ngIf="isEditable" row="0" col="0" text="Submit" (tap)="onSubmitButtonTap()" style="margin-bottom: 5px;"></Button>
-                    <Button *ngIf="isEditable" row="0" col="1" text="Cancel" (tap)="onCancelButtonTapOn(item)" style="margin-bottom: 5px;"></Button>
+                    <Button *ngIf="isEditable" row="0" col="0" text="Submit" (tap)="onSubmitButtonTap()" class="p-b-5"></Button>
+                    <Button *ngIf="isEditable" row="0" col="1" text="Cancel" (tap)="onCancelButtonTapOn(item)" class="p-b-5"></Button>
                 </GridLayout>
             </StackLayout>
                 </StackLayout>

@@ -6,7 +6,7 @@
                             <Label row="0" col="0" colspan="2" class="itemLabel t-18 p-b-10" [text]="addEditPlanText" textwrap="true"></Label>
                         </GridLayout>
                         <DropDown #dd
-                        class="state-dropdown"
+                        class="state-dropdown p-b-10"
                         backroundColor="red"
                         [items]="items"
                         hint="Select State"
@@ -58,7 +58,7 @@
                 <Label [text]="getUserName(user)" class="font-weight-bold c-black t-25" text="" textAlignment="center" textWrap="true"></Label>
                 <Label *ngIf="item.plan_name" [text]="item.plan_name" class="c-black t-19 p-t-20" textAlignment="center" textWrap="true"></Label>
                 <Label text=" "></Label>
-                <Label text="Edit Plan" class="p-b-10 p-r-20" class="editPlan" (tap)="editPlanTap()"></Label>
+                <Label text="Edit Plan" class="p-b-10 p-r-20 editPlan" (tap)="editPlanTap()"></Label>
             </StackLayout>
             
                 <GridLayout columns="*,*" rows="auto,auto,auto,auto">
@@ -117,8 +117,8 @@
             <Button [class.active]="!!planName" [isEnabled]="!!planName" text="Save" class="submit-button platform-button" (tap)="onSaveButtonTap()"></Button>
         </StackLayout>
         <GridLayout *ngIf="!isPlan && isEditPlan" rows="auto" columns="*,*" verticalAlignment="bottom" class="p-b-5">
-            <Button [class.active]="!!planName" [isEnabled]="!!planName" row="0" col="0" text="Save" class="submit-button platform-button" (tap)="onSaveButtonTap()"></Button>
-            <Button row="0" col="1" text="Cancel" class="find-button platform-button cancel-button" (tap)="onCancelButtonTap()"></Button>
+            <Button [class.active]="!!planName" [isEnabled]="!!planName" row="0" col="0" text="Save" class="submit-button platform-button p-r-2" (tap)="onSaveButtonTap()"></Button>
+            <Button row="0" col="1" text="Cancel" class="find-button platform-button cancel-button p-l-2" (tap)="onCancelButtonTap()"></Button>
         </GridLayout>
     </GridLayout>
     

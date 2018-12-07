@@ -16,7 +16,7 @@
 
 .submit-button {
     background-color: #C7C7CC;
-    margin: 10 0;
+    margin: 10 15;
 }
 
 .state-dropdown {
@@ -33,4 +33,5 @@
 
 .cancel-button {
     background-color: gray;
+    margin-left: 15px;
 }

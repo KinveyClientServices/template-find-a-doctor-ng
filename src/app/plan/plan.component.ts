@@ -294,7 +294,7 @@ export class PlanComponent {
             this.isLoading = false;
             
         }).catch((error)=>{
-            alert("Could not  get active plan" + error);
+            alert("Backend operation failed" + error);
         });
         this.isPlan = true;
         this.isEditPlan = false;
@@ -329,5 +329,6 @@ export class PlanComponent {
         }
         this.filterPlans = "";
         this.planName = "";
+        this.plans = [];
     }
 }
